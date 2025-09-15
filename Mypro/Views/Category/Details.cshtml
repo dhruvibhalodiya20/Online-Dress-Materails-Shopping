@@ -1,0 +1,353 @@
+﻿@{
+    ViewData["Title"] = ViewBag.CategoryName;
+    Layout = "~/Views/Shared/head_foot.cshtml";
+
+    var colors = ViewBag.AvailableColors as List<string> ?? new List<string>
+    {
+        "Green", "Pink", "White", "Blue", "Multicolour", "Unknown"
+    };
+
+    var selectedColors = ViewBag.SelectedColors as List<string> ?? new List<string>();
+}
+
+<a href="javascript:history.back()" class="back-btn"> ← </a>
+<section class="category-section">
+    <div class="container filter-layout">
+
+        <!-- Sidebar Filter -->
+        <aside class="side-nav">
+            <h3>Filter by Colour</h3>
+            <form method="get">
+                <input type="hidden" name="name" value="@ViewBag.CategoryName" />
+                <div class="color-checkbox-group">
+                    @foreach (var color in colors)
+                    {
+                        <label class="color-checkbox">
+                            <input type="checkbox" name="colors" value="@color"
+                                   @(selectedColors.Contains(color) ? "checked" : "") />
+                            <span>@color</span>
+                        </label>
+                    }
+                </div>
+                <button type="submit" class="apply-btn">Apply</button>
+            </form>
+
+            <!-- Color Palette Generator -->
+            <div class="palette-generator mt-4">
+                <h3>Color Palette Generator</h3>
+                <label for="baseColor">Pick a base color:</label>
+                <input type="color" id="baseColor" value="#3498DB" />
+                <button id="generateBtn" class="btn btn-primary mt-2">Generate Palette</button>
+                <div id="palette" class="palette mt-3"></div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="category-title">@ViewBag.CategoryName</h1>
+            <p class="category-subtitle">Explore our premium collection of @ViewBag.CategoryName fabrics</p>
+            <div class="image-grid">
+                @if (ViewBag.ImagesList != null && ((List<Mypro.Models.CategoryImage>)ViewBag.ImagesList).Count > 0)
+                {
+                    @foreach (var img in (List<Mypro.Models.CategoryImage>)ViewBag.ImagesList)
+                    {
+                        <div class="image-card" data-aos="zoom-in">
+                            <a href="@Url.Action("ImageDetails", "Category", new { id = img.ImageId })">
+                                <img src="@Url.Content(img.ImagePath)" alt="@ViewBag.CategoryName" />
+                            </a>
+                          
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <form method="post" asp-controller="Account" asp-action="AddToWishlist" style="margin-top:8px;">
+                                    <input type="hidden" name="imageId" value="@img.ImageId" />
+                                    <button type="submit" class="wishlist-icon-btn">
+                                        <i class="bi bi-heart"></i>
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a href="/Account/Login" class="wishlist-btn">
+                                    <i class="bi bi-heart"></i> Login to Wishlist
+                                </a>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No images found for this category.</p>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div id="imageModal" class="image-modal">
+    <span class="modal-close">&times;</span>
+    <img class="modal-content" id="modalImg" />
+</div>
+
+<!-- External Libraries -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+    AOS.init({ duration: 1000, once: true });
+
+    // Modal logic
+    // const modal = document.getElementById("imageModal");
+    // const modalImg = document.getElementById("modalImg");
+    // const closeModal = document.querySelector(".modal-close");
+
+    // document.querySelectorAll(".zoomable-img").forEach(img => {
+    //     img.addEventListener("click", () => {
+    //         modal.style.display = "flex";
+    //         modalImg.src = img.src;
+    //     });
+    // });
+
+    closeModal.addEventListener("click", () => modal.style.display = "none");
+    modal.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
+
+    // AJAX Color Palette Generator
+    $(document).ready(function () {
+        $("#generateBtn").click(function (e) {
+            e.preventDefault();
+            var baseColor = $("#baseColor").val();
+            $.ajax({
+               url: '@Url.Action("GeneratePalette", "Category")',
+               type: "POST",
+               data: { baseColor: baseColor },
+               success: function (colors) {
+                    $("#palette").empty();
+                    colors.forEach(function (c) {
+                        $("#palette").append('<div class="color-box" style="background-color:' + c + '" title="' + c + '"></div>');
+                    });
+               },
+               error: function () { alert("Error generating palette."); }
+            });
+        });
+    });
+</script>
+
+<style>
+    .category-section .container {
+        padding-left: 0;
+        padding-right: 0;
+        max-width: 100%;
+    }
+
+    .filter-layout {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 30px;
+        margin-top: 30px;
+        width: 100%;
+    }
+
+    /* Sidebar */
+    .side-nav {
+        background: linear-gradient(180deg, #F8F8F8, #F1F1F1);
+        padding: 25px 20px;
+        border-right: 2px solid #E0E0E0;
+        min-height: 100vh;
+        position: sticky;
+        top: 80px;
+        left: 0;
+        width: 250px;
+        z-index: 999;
+    }
+
+    .back-btn {
+        position: absolute;
+        top: 100px;
+        left: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background: #f1f1f1;
+        border-radius: 50%;
+        font-size: 22px;
+        font-weight: bold;
+        color: #444;
+        text-decoration: none;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+
+        .back-btn:hover {
+            background: #FF416C;
+            color: #fff;
+        }
+
+    .side-nav h3 {
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #222;
+    }
+
+    .color-checkbox-group {
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .color-checkbox input[type="checkbox"] {
+        margin-right: 5px;
+    }
+
+    .color-checkbox span {
+        font-weight: 500;
+    }
+
+    .apply-btn {
+        background: #FF416C;
+        color: #fff;
+        padding: 10px 22px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+
+        .apply-btn:hover {
+            background: #FF4B2B;
+        }
+
+    /* Palette Generator */
+    .palette {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .color-box {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    /* Main Content */
+    .main-content {
+        text-align: center;
+    }
+
+    .category-title {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .category-subtitle {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .image-card {
+        overflow: hidden;
+        border-radius: 14px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+    /* Modal */
+    .image-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        cursor: zoom-out;
+    }
+
+        .image-modal .modal-content {
+            max-width: 30%;
+            max-height: 80%;
+            border-radius: 12px;
+        }
+
+    .modal-close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 40px;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+        .modal-close:hover {
+            color: #ccc;
+        }
+
+    .wishlist-icon-form,
+    .wishlist-icon-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+        .wishlist-icon-btn:hover {
+            background: rgba(255, 0, 0, 0.7);
+            color: #fff;
+        }
+
+
+    .wishlist-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: 1px solid #FF416C;
+        color: #FF416C;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+        .wishlist-btn:hover {
+            background: #FF416C;
+            color: #fff;
+        }
+
+</style>

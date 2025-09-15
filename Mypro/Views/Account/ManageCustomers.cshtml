@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Mypro.Models.Customer>
+@{
+    ViewBag.Title = "Manage Customers";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<br /><br />
+<a href="javascript:history.back()" class="btn btn-light mb-3" style="font-size:20px; font-weight:bold;">←</a>
+
+<h2 class="mb-4">Manage Customers</h2>
+
+<style>
+    h2 {
+        color: black; 
+    }
+
+    body.theme-dark h2 {
+        color: white !important; 
+    }
+</style>
+
+
+<form method="get" asp-action="ManageCustomers" class="d-flex align-items-center mb-3" style="gap:10px;">
+    <select name="searchBy" class="form-select" style="width:180px;">
+        @if (ViewBag.SearchBy?.ToString() == "Name")
+        {
+            <option value="Name" selected>Name</option>
+        }
+        else
+        {
+            <option value="Name">Name</option>
+        }
+
+        @if (ViewBag.SearchBy?.ToString() == "Email")
+        {
+            <option value="Email" selected>Email</option>
+        }
+        else
+        {
+            <option value="Email">Email</option>
+        }
+
+        @if (ViewBag.SearchBy?.ToString() == "Contact")
+        {
+            <option value="Contact" selected>Contact</option>
+        }
+        else
+        {
+            <option value="Contact">Contact</option>
+        }
+    </select>
+
+    <input type="text" name="searchtext" class="form-control" placeholder="Enter search term"
+           value="@ViewBag.Searchtext" style="width:250px;" />
+
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a asp-action="ManageCustomers" class="btn btn-secondary">Reset</a>
+</form>
+
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Profile</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Contact</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Where(c => c.Role == "User"))
+        {
+            var firstLetter = !string.IsNullOrEmpty(item.CustomerName)
+            ? item.CustomerName.Substring(0, 1).ToUpper()
+            : "?";
+
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.PhotoPath))  
+                    {
+                        <img src="~/uploads/@item.PhotoPath"
+                             class="rounded-circle"
+                             style="width:43px; height:43px; object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center"
+                             style="width:40px; height:40px; font-weight:bold;">
+                            @firstLetter
+                        </div>
+                    }
+                </td>
+                <td>@item.CustomerName</td>
+                <td>@item.Gender</td>
+                <td>@item.Email</td>
+                <td>@item.Address</td>
+                <td>@item.City?.CityName</td>
+                <td>@item.ContactNumber</td>
+                <td>
+                    <a asp-action="DeleteCustomer" asp-route-id="@item.CustomerId" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Are you sure?')" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

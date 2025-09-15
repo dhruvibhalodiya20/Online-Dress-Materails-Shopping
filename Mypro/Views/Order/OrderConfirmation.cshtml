@@ -1,0 +1,89 @@
+﻿@model Mypro.Models.Order
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container my-5">
+    <!-- Order Confirmation Header -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-gradient">✅ Order Confirmed — #@Model.Id</h2>
+        <p class="text-muted">Placed on: @Model.OrderDate.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")</p>
+    </div>
+
+    <!-- Customer Details -->
+    <div class="card shadow-lg rounded-4 mb-4 p-4">
+        <h4 class="fw-bold text-primary mb-3">Customer Details</h4>
+        <p><span class="fw-bold">Name:</span> @Model.FullName</p>
+        <p><span class="fw-bold">Email:</span> @Model.Email</p>
+        <p><span class="fw-bold">Phone:</span> @Model.Phone</p>
+        <p><span class="fw-bold">Address:</span> @Model.Address</p>
+    </div>
+
+    <!-- Order Items -->
+    <div class="card shadow-lg rounded-4 mb-4 p-4">
+        <h4 class="fw-bold text-primary mb-3">Order Items</h4>
+        <ul class="list-group list-group-flush">
+            @foreach (var oi in Model.OrderItems)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>@oi.Image?.Category?.CategoryName</span>
+                    <span>Qty: @oi.Quantity</span>
+                    <span class="fw-bold">₹@oi.TotalPrice</span>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="card shadow-lg rounded-4 p-4" style="background: #334155; color: #f8fafc;">
+        <h4 class="fw-bold text-warning mb-3">Order Summary</h4>
+        <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal:</span>
+            <span>₹@Model.SubTotal</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2 text-success">
+            <span>Order Discount (@Model.OrderDiscountPercent%):</span>
+            <span>-₹@Model.TotalDiscountAmount </span>
+        </div>
+        <div class="d-flex justify-content-between mb-2 text-success">
+            <span>Date Discount (@Model.DateDiscountPercent%):</span>
+            <span>-₹@Model.TotalDiscountAmount </span>
+        </div>
+        <div class="d-flex justify-content-between mb-2 text-info">
+            <span>GST (@Model.GSTPercent%):</span>
+            <span>₹@Model.GSTAmount</span>
+        </div>
+        <hr class="border-light">
+        <div class="d-flex justify-content-between fw-bold fs-4">
+            <span>Total Paid:</span>
+            <span>₹@Model.FinalAmount</span>
+        </div>
+    </div>
+</div>
+
+<style>
+   
+    .text-gradient {
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+   
+    body.theme-dark .card {
+        background: #1e293b !important;
+        color: #f8fafc !important;
+    }
+
+    .card h4 {
+        font-family: 'Playfair Display', serif;
+    }
+
+    ul.list-group li {
+        font-size: 1rem;
+    }
+
+    .fw-bold {
+        font-weight: 600 !important;
+    }
+</style>

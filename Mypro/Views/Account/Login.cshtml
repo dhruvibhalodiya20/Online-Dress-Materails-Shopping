@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<style>
+    body {
+        background-color: #f5f7fa; 
+    }
+
+    .login-card {
+        max-width: 400px;
+        margin: auto;
+        background: #ffffff; 
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+        .login-card h2 {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+    .form-label {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        transition: border-color 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+        }
+
+    .btn-primary {
+        border-radius: 8px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .text-primary {
+        font-weight: 600;
+    }
+
+        .text-primary:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div class="container mt-5">
+    <div class="login-card">
+        <h2 class="text-center mb-4">Login</h2>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        <form method="post" asp-action="Login">
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="Email" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="Password" class="form-control" required />
+            </div>
+
+            <div class="mb-3 text-end">
+                <a asp-action="ForgotPassword" class="text-primary">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <span>Don't have an account? </span>
+            <a asp-action="Register" asp-controller="Account" class="text-primary">Register here</a>
+        </div>
+        <br />
+        <div class="mb-3 text-center">
+            <a asp-action="Index" asp-controller="User" class="back-link">
+                🔙 Back
+            </a>
+        </div>
+
+        <style>
+            .back-link {
+                font-size: 1rem; 
+                color: darkslateblue; 
+                text-decoration: none; 
+            }
+
+                .back-link:hover {
+                    color: darkslateblue; 
+                }
+        </style>
+
+        
+
+       
+
+    </div>
+</div>

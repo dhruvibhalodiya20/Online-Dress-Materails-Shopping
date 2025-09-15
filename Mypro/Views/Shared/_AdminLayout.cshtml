@@ -1,0 +1,365 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>@ViewBag.Title - Admin Panel</title>
+
+    <!-- Vendor CSS -->
+    <link href="~/template/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/template/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link href="~/template/assets/css/main.css" rel="stylesheet">
+
+    <style>
+
+        /* .logo {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .logo-img {
+            height: 40px;
+            margin-right: 8px;
+            transform: scale(1.6);
+            margin-left: +10%; 
+            transition: transform 0.3s ease;
+        } */
+
+        .logo-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffffff, #d9d9d9);
+            color: darkslateblue;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            bottom: 49px;
+            left: 0;
+            width: 250px;
+            background: linear-gradient(180deg, #1f1f1f 0%, #2c2c2c 100%);
+            color: #fff;
+            padding: 25px 20px;
+            overflow-y: auto;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+            .sidebar h4 {
+                font-size: 1rem;
+                margin-bottom: 20px;
+                font-weight: 550;
+                color: #f1f1f1;
+                text-transform: uppercase;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                padding-bottom: 7px;
+                align-content:center;
+            }
+
+            .sidebar a {
+                display: flex;
+                align-items: center;
+                color: #ddd;
+                padding: 10px 12px;
+                margin: 8px 0;
+                border-radius: 10px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+
+                .sidebar a i {
+                    font-size: 1.2rem;
+                    margin-right: 10px;
+                }
+
+                .sidebar a:hover,
+                .sidebar a.active {
+                    background: rgba(255, 255, 255, 0.1);
+                    color: #f7941d;
+                    transform: translateX(5px);
+                }
+
+        /* Main content */
+        main {
+           
+            margin-left: 250px;
+            padding: 30px;
+            min-height: calc(100vh - 140px);
+            /* background: linear-gradient(180deg, #1f1f1f 0%, #2c2c2c 100%); */
+            color: #ffffff;
+        }
+
+
+        /* Header */
+        .admin-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1050;
+            background: linear-gradient(180deg, #1f1f1f 0%, #2c2c2c 100%);
+            /* box-shadow: 0 2px 8px rgba(0,0,0,0.1); */
+            height: 66px;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(180deg, #1f1f1f 0%, #2c2c2c 100%);
+            color: #fff;
+            text-align: center;
+            padding: 14px 0;
+            width:100%;
+        }
+
+            footer p {
+                margin: 0;
+                font-size: 0.9rem;
+            }
+
+
+        /* Scrollbar styling for sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+      
+        main.theme-dark {
+            background: linear-gradient(180deg, #1f1f1f 0%, #2c2c2c 100%);
+            color: #ffffff;
+        }
+
+        /* Default Light Theme */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ffffff; /* white default */
+            color: #000000;
+        }
+
+            /* Dark Theme */
+            body.theme-dark {
+                background: linear-gradient(180deg, #1f1f1f 0%, #2c2c2c 100%) !important;
+                color: #ffffff !important;
+            }
+
+                /* Elements inside dark mode */
+                body.theme-dark .container,
+                body.theme-dark main,
+                body.theme-dark footer,
+                body.theme-dark .card {
+                    background: transparent !important;
+                    color: #ffffff !important;
+                }
+
+
+        .theme-btn {
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+            .theme-btn.light-mode {
+                background: linear-gradient(135deg, #ffffff, #f1f1f1);
+                color: #333;
+            }
+
+                .theme-btn.light-mode:hover {
+                    background: linear-gradient(135deg, #f8f8f8, #e1e1e1);
+                    transform: scale(1.05);
+                }
+
+            .theme-btn.dark-mode {
+                background: linear-gradient(135deg, #1f1f1f, #2c2c2c);
+                color: #ffffff;
+            }
+
+                .theme-btn.dark-mode:hover {
+                    background: linear-gradient(135deg, #2c2c2c, #1f1f1f);
+                    transform: scale(1.05);
+                }
+
+
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+        <h4>Admin Panel</h4>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="mb-2" style="font-size: 0.9rem; color: #bbb;">
+                Welcome, @User.Identity.Name!
+            </div>
+            @* <a asp-controller="User" asp-action="EditProfile">
+                <i class="bi bi-person-circle"></i> Edit Profile
+            </a> *@
+        }
+
+        <a asp-action="ManageCustomers"><i class="bi bi-people"></i> Manage Customers</a>
+        <a asp-action="ManageCities"><i class="bi bi-geo-alt"></i> Manage Cities</a>
+        <a asp-action="ManageCategories"><i class="bi bi-tags"></i> Manage Categories</a>
+        <a asp-action="ManageCategoryImages"><i class="bi bi-images"></i> Category Images</a>
+        <a asp-action="StockOverview"><i class="bi bi-box-seam"></i> Stock Overview</a>
+        <a asp-action="Pricing"><i class="bi bi-cash-coin"></i> Pricing</a>
+        <a class="text-light mt-3" asp-action="Logout">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+    </nav>
+
+    <!-- HEADER -->
+    <header class="admin-header d-flex justify-content-between align-items-center px-4">
+        <div class="d-flex align-items-center">
+            <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+                <!-- Logo Image -->
+                @* <img src="~/template/assets/img/mylogo.png" alt="FashionRack Logo" class="logo-img"> *@
+
+                <!-- Stylish Text -->
+                <h1> <span class="logo-text"> 👨🏻‍💻 Ajay Fashion Dashboard ! </span></h1>
+            </a>
+        </div>
+
+        @* <div class="d-flex gap-4">
+            <div class="text-center">
+                
+                <small class="text-muted"> Stock</small>
+            </div>
+          
+           
+            <div class="text-center">
+                
+                <small class="text-muted">Today's Sales</small>
+            </div>
+        </div> *@
+
+        <div class="d-flex align-items-center gap-3">
+
+            
+
+            <button class="btn btn-sm"
+                    style="color: #fff; border: 1px solid #fff; background: linear-gradient(180deg, #1f1f1f 0%, #2c2c2c 100%) !important; transition: all 0.3s ease;"
+                    onmouseover="this.style.background='#fff'; this.style.color='#000';"
+                    onmouseout="this.style.background='linear-gradient(180deg, #1f1f1f 0%, #2c2c2c 100%)'; this.style.color='#fff';">
+                <i class="bi bi-tag"></i> Update Prices
+            </button>
+            <!-- Theme Toggle Button -->
+            <button class="btn btn-sm"
+                    id="themeToggleBtn"
+                    style="color: #fff; border: 1px solid #fff; background: linear-gradient(180deg, #1f1f1f 0%, #2c2c2c 100%) !important; transition: all 0.3s ease;"
+                    onmouseover="this.style.background='#fff'; this.style.color='#000';"
+                    onmouseout="this.style.background='linear-gradient(180deg, #1f1f1f 0%, #2c2c2c 100%)'; this.style.color='#fff';">
+                🌙 Dark
+            </button>
+
+
+
+            <div class="dropdown">
+                @if (!string.IsNullOrEmpty(User.FindFirst("PhotoPath")?.Value))
+                {
+                   
+                    <img src="~/uploads/@User.FindFirst("PhotoPath").Value"
+                         class="rounded-circle dropdown-toggle"
+                         style="width:40px; height:40px; object-fit:cover; cursor:pointer;"
+                         id="profileMenu" data-bs-toggle="dropdown" aria-expanded="false" />
+
+                }
+                else
+                {
+                    
+                    <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center dropdown-toggle"
+                         style="width:40px; height:40px; font-weight:bold; cursor:pointer;"
+                         id="profileMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        @User.Identity.Name.Substring(0, 1).ToUpper()
+                    </div>
+                }
+
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileMenu">
+                    <li>
+                        <a class="dropdown-item" asp-controller="Account" asp-action="UploadProfilePhoto">
+                            <i class="bi bi-person"></i> Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="javascript:void(0);" onclick="openThemeModal()">
+                            <i class="bi bi-gear"></i> Settings
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- FOOTER -->
+    <br /><br /><br /><br />
+  <footer>
+        <div class="container">
+            <p>© <strong>Ajay Fashion</strong> All Rights Reserved | Designed by Admin Panel</p>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="~/template/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+       
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        function setTheme(theme) {
+            document.body.classList.remove('theme-dark');
+            if (theme === 'dark') {
+                document.body.classList.add('theme-dark');
+                themeToggleBtn.innerHTML = '☀ Light';
+            } else {
+                themeToggleBtn.innerHTML = '🌙 Dark';
+            }
+            localStorage.setItem('adminTheme', theme);
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.body.classList.contains('theme-dark');
+            setTheme(isDark ? 'light' : 'dark');
+        });
+
+        (function () {
+            const savedTheme = localStorage.getItem('adminTheme') || 'light';
+            setTheme(savedTheme);
+        })();
+    </script>
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,96 @@
+﻿@model Mypro.Models.Customer
+@{
+    ViewData["Title"] = "Edit Profile";
+    Layout = "~/Views/Shared/head_foot.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-3 p-4" style="max-width: 700px; margin: auto;">
+        <div class="card-body">
+            <h2 class="text-center text-primary mb-4">✏️ Edit Profile</h2>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                    <strong>@TempData["SuccessMessage"]</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+           <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+
+                <input type="hidden" asp-for="CustomerId" />
+                <input type="hidden" asp-for="Email" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Full Name</label>
+                        <input asp-for="CustomerName" class="form-control shadow-sm" placeholder="Enter your name" />
+                        <span asp-validation-for="CustomerName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Email</label>
+                        <input asp-for="Email" class="form-control shadow-sm bg-light" readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Contact Number</label>
+                        <input asp-for="ContactNumber" class="form-control shadow-sm" placeholder="Enter contact number" />
+                        <span asp-validation-for="ContactNumber" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold d-block">Gender</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="Gender" value="Male" />
+                            <label class="form-check-label">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="Gender" value="Female" />
+                            <label class="form-check-label">Female</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Profile Photo</label>
+                        <input type="file" name="ProfilePhoto" class="form-control shadow-sm" accept=".jpg,.jpeg,.png" />
+                                        @* @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                                        {
+                                            <img src="~/uploads/@Model.PhotoPath" alt="Profile Photo"
+                                                 class="rounded-circle mt-2" style="width:60px; height:60px; object-fit:cover;" />
+                                        } *@
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Address</label>
+                        <textarea asp-for="Address" class="form-control shadow-sm" rows="3" placeholder="Enter your address"></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">City</label>
+                        <select asp-for="CityId" class="form-control shadow-sm"
+                                asp-items="@(new SelectList(ViewBag.Cities, "CityId", "CityName", Model?.CityId))">
+                            <option value="">-- Select City --</option>
+                        </select>
+
+                        <span asp-validation-for="CityId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-success btn-lg shadow-sm">
+                        💾 Update Profile
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-dark btn-lg shadow-sm">🔙 Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

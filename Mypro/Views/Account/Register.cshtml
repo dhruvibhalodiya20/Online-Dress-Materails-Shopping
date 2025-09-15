@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "Register";
+}
+
+<style>
+    /* Page background untouched */
+    body {
+        background: #f4f6f8; /* Soft neutral gray */
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* Card styling with unique gradient background */
+    .register-card {
+        max-width: 650px;
+        margin: auto;
+        background: linear-gradient(135deg, #ffffff 70%, #e8f5e9 100%); /* White to light green */
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+        border: 1px solid #d4edda; /* Light green border */
+    }
+
+        /* Heading */
+        .register-card h2 {
+            font-weight: 700;
+            color: #2e7d32; /* Deep green */
+        }
+
+    /* Labels */
+    .form-label {
+        color: #1b5e20; /* Dark green */
+        font-weight: 600;
+    }
+
+    /* Input & select fields */
+    .form-control,
+    .form-select,
+    textarea {
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .form-control:focus,
+        .form-select:focus,
+        textarea:focus {
+            border-color: #43a047; /* Medium green */
+            box-shadow: 0 0 6px rgba(67, 160, 71, 0.4);
+        }
+
+    /* Checkboxes & Radio */
+    .form-check-input:checked {
+        background-color: #43a047;
+        border-color: #43a047;
+    }
+
+    /* Button styling */
+    .btn-success {
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        background: linear-gradient(90deg, #4caf50, #2e7d32);
+        border: none;
+    }
+
+        .btn-success:hover {
+            background: linear-gradient(90deg, #2e7d32, #4caf50);
+        }
+
+    /* Login link */
+    .text-primary {
+        color: #2e7d32 !important;
+        font-weight: 600;
+    }
+
+        .text-primary:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div class="container mt-5">
+    <div class="register-card">
+        <h2 class="text-center mb-4">Register</h2>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        <form method="post" asp-action="Register">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="CustomerName" class="form-control" required />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="Email" class="form-control" required />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="Password" class="form-control" required />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Contact Number</label>
+                    <input type="text" name="ContactNumber" class="form-control" required />
+                </div>
+
+                @* <div class="col-md-12 mb-3">
+                    <label class="form-label">Hobby</label><br />
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="Hobby" value="Reading" class="form-check-input" /> Reading
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="Hobby" value="Sports" class="form-check-input" /> Sports
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="Hobby" value="Music" class="form-check-input" /> Music
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="Hobby" value="Travel" class="form-check-input" /> Travel
+                    </div>
+                </div> *@
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Gender</label><br />
+                    <div class="form-check form-check-inline">
+                        <input type="radio" name="Gender" value="Male" class="form-check-input" /> Male
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" name="Gender" value="Female" class="form-check-input" /> Female
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Address</label>
+                    <textarea name="Address" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">City</label>
+                    <select name="CityId" class="form-select" required>
+                        <option value="">Select City</option>
+                        @foreach (var city in ViewBag.Cities)
+                        {
+                            <option value="@city.CityId">@city.CityName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Register</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <span>Already registered? </span>
+            <a asp-action="Login" asp-controller="Account" class="text-primary">Login here</a>
+        </div>
+
+        <br />
+        <div class="mb-3 text-center">
+            <a asp-action="Index" asp-controller="User" class="back-link">
+                🔙 Back
+            </a>
+        </div>
+
+        <style>
+            .back-link {
+                font-size: 1rem;
+                color: darkslateblue;
+                text-decoration: none;
+            }
+
+                .back-link:hover {
+                    color: darkslateblue;
+                }
+        </style>
+
+    </div>
+</div>

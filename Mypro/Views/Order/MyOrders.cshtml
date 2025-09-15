@@ -1,0 +1,195 @@
+﻿@model List<Mypro.Models.Order>
+@{
+    ViewData["Title"] = "My Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a href="javascript:history.back()"
+   style="
+       position: absolute;
+
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       width: 45px;
+       height: 45px;
+       border-radius: 50%;
+       background-color: lightcoral;
+       color: #000;
+       font-size: 22px;
+       font-weight: bold;
+       text-decoration: none;
+       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+       left: 7%;
+       transition: all 0.3s ease;
+       z-index: 100;
+   "
+   onmouseover="this.style.backgroundColor='#e0e0e0'; this.style.transform='scale(1.1)';"
+   onmouseout="this.style.backgroundColor='lightcoral'; this.style.transform='scale(1)';">
+    ←
+</a>
+
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+
+   
+
+<div class="container my-5">
+    <h2 class="fw-bold"
+        style="flex: 1; text-align: center; color: #000; font-family: 'Playfair Display', serif; font-size: 2.5rem; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+        My Orders
+    </h2>
+
+
+    <br /><br />
+
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            You have not placed any orders yet.
+        </div>
+    }
+    else
+    {
+        <div class="accordion" id="ordersAccordion">
+            @foreach (var order in Model)
+            {
+                <div class="accordion-item mb-3 shadow-sm rounded-3">
+                    <h2 class="accordion-header" id="heading-@order.Id">
+
+                        <button class="accordion-button collapsed fw-bold"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse-@order.Id"
+                                aria-expanded="false"
+                                aria-controls="collapse-@order.Id">
+
+                               🧾 Order #@order.Id — @order.OrderDate.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+
+                            <span class="ms-auto text-success">₹@order.FinalAmount</span>
+
+                        </button>
+
+                    </h2>
+
+                    <div id="collapse-@order.Id" 
+                         class="accordion-collapse collapse"
+                         aria-labelledby="heading-@order.Id" 
+                         data-bs-parent="#ordersAccordion">
+
+
+                        <div class="accordion-body">
+
+                            <!-- Order Details -->
+                            <div class="mb-3 p-3 border rounded bg-light">
+                                <h5 class="fw-bold text-primary mb-2">👤 Customer Details</h5>
+                                <p><b>Name:</b> @order.FullName</p>
+                                <p><b>Email:</b> @order.UserId</p>
+                                <p><b>Placed On:</b> @order.OrderDate.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")</p>
+                                <p><b>Shipping Address:</b> @order.Address</p>
+                            </div>
+
+                            <!-- Order Items -->
+                            <h5 class="fw-bold text-primary mb-3">🛒 Order Items</h5>
+                            <ul class="list-group mb-3">
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <li class="list-group-item">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="fw-bold">@item.Image?.Category?.CategoryName</span>
+                                            <span class="text-muted">Qty: @item.Quantity</span>
+                                        </div>
+                                        <hr class="my-1" />
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-secondary">Unit Price: ₹@item.UnitPrice</span>
+                                            <span class="fw-bold text-success">₹@item.TotalPrice</span>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+
+                            <!-- Summary -->
+                            <div class="p-3 bg-white border rounded shadow-sm">
+                                <h6 class="fw-bold">Subtotal: ₹@order.SubTotal</h6>
+                                <h6>Discount: -₹@order.TotalDiscountAmount</h6>
+                                <h6>GST: ₹@order.GSTAmount</h6>
+                                <h5 class="fw-bold text-success mt-2">Final Amount: ₹@order.FinalAmount</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+<br /><br /><br /><br />
+<style>
+    .text-gradient {
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .accordion-button {
+        font-size: 1.1rem;
+    }
+
+    .list-group-item {
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px dashed #ccc;
+    }
+
+    /* Attractive Gradient Heading */
+    .orders-heading {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ff416c, #ff4b2b, #ff9a00, #ff416c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: relative;
+        display: inline-block;
+        animation: gradientMove 5s linear infinite;
+    }
+
+    /* Gradient animation */
+    keyframes gradientMove {
+        0%
+
+    {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+    }
+
+    /* Underline effect */
+    .orders-heading::after {
+        content: '';
+        display: block;
+        width: 80%;
+        height: 4px;
+        margin: 8px auto 0;
+        border-radius: 2px;
+        background: linear-gradient(90deg, #ff416c, #ff9a00, #ff4b2b);
+    }
+
+    /* Icon styling */
+    .orders-heading i {
+        color: #ff4b2b;
+        font-size: 2.2rem;
+        vertical-align: middle;
+    }
+</style>
+

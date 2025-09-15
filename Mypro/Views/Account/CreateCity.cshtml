@@ -1,0 +1,47 @@
+﻿@model Mypro.Models.City
+@{
+    ViewBag.Title = "Create City";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<br />
+<br />
+<a href="javascript:history.back()" class="btn btn-light mb-3" style="font-size:20px; font-weight:bold;">←</a>
+
+<h2 class="mb-4">Create City</h2>
+
+<style>
+    h2 {
+        color: black;
+    }
+
+    body.theme-dark h2 {
+        color: white !important;
+    }
+
+    label {
+        color: black;
+    }
+
+    body.theme-dark label {
+        color: white !important;
+    }
+</style>
+
+<form asp-action="CreateCity" asp-controller="Account" method="post">
+
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div> 
+    <div class="mb-3">
+        <label asp-for="CityName" class="form-label"></label>
+        <input asp-for="CityName" class="form-control" />
+        <span asp-validation-for="CityName" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="ManageCities" asp-controller="Account" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

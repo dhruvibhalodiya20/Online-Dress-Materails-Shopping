@@ -1,0 +1,1314 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/head_foot.cshtml";
+}
+
+
+<main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section light-background">
+
+        <div class="container">
+            <div class="row gy-4 justify-content-center justify-content-lg-between">
+                <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                    @* <h1 data-aos="fade-up">Enjoy Your Healthy<br>Delicious Food</h1> *@
+                    <h2 data-aos="fade-up" class="hero-title">
+                        Wrap Yourself in Beauty<br>
+                        Discover Ajay Fashion Dress Materials
+                    </h2>
+
+                    <style>
+                        .hero-title {
+                            font-size: 2.5rem;
+                            font-weight: bold;
+                            font-family: 'Brush Script MT' /* stylish font */
+                            /* Light, unique gradient inspired by logo */
+                           
+                            -webkit-background-clip: text;
+                            background: linear-gradient(45deg, #f7941d, #ec008c);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            display: inline-block;
+                            color: #ec008c;
+                            ;
+                            -webkit-text-fill-color: transparent;
+                            text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* subtle shadow for depth */
+                        }
+                    </style>
+
+                    <p data-aos="fade-up" data-aos-delay="100" class="hero-text">
+                        Step into a world of vibrant textures and exquisite designs. Our dress materials add charm, style, and sophistication to your wardrobe effortlessly!
+                    </p>
+
+                    <style>
+                        .hero-text {
+                            font-size: 1.1rem; /* standard readable size */
+                            font-family: Arial, Helvetica, sans-serif; /* clean font */
+                            color: #1E90FF; /* blue color */
+                            line-height: 1.6;
+                        }
+                    </style>
+
+
+                    
+
+                    <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
+                        @* <a href="#book-a-table" class="btn-get-started">Show</a> *@
+                        <a href="~/template/assets/img/video1.mp4" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+                    </div>
+                </div>
+                <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out">
+                    <img src="~/template/assets/img/img1.jpg" class="img-fluid animated" alt="">
+                </div>
+            </div>
+        </div>
+
+    </section><!-- /Hero Section -->
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>About Us<br></h2>
+            <p><span>Discover</span> <span class="description-title">Our Collection</span></p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="row gy-4">
+                <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
+                    <img src="~/template/assets/img/shop1.jpg" class="img-fluid mb-4" alt="">
+                    <div class="book-a-table">
+                        <h3>Visit Our Store</h3>
+                        <p>9898308449</p>
+                    </div>
+                </div>
+                <div class="col-lg-5" data-aos="fade-up" data-aos-delay="250">
+                    <div class="content ps-0 ps-lg-5">
+                        <p class="fst-italic">
+                            Welcome to <strong>Ajay Fashion</strong>, where elegance meets quality. Explore our exclusive range of premium dress materials, designed for every occasion.
+                        </p>
+                        <ul>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>Exquisite fabrics sourced from trusted suppliers.</span></li>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>Variety of designs to suit traditional and modern tastes.</span></li>
+                            <li><i class="bi bi-check-circle-fill"></i> <span>Customizable options to create your perfect outfit effortlessly.</span></li>
+                        </ul>
+                        <p>
+                            Our mission is to provide top-quality dress materials that make every customer feel special. Experience the perfect blend of style, comfort, and affordability.
+                        </p>
+
+                        <div class="position-relative mt-4">
+                            <img src="~/template/assets/img/shop2.jpg" class="img-fluid" alt="">
+                            <a href="~/template/assets/img/new.mp4" class="glightbox pulsating-play-btn"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+    <!-- /About Section -->
+    <!-- Why Us Section -->
+    @* <section id="why-us" class="why-us section light-background">
+
+        <div class="container">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="why-box">
+                        <h3>Why Choose Yummy</h3>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
+                            Asperiores dolores sed et. Tenetur quia eos. Autem tempore quibusdam vel necessitatibus optio ad corporis.
+                        </p>
+                        <div class="text-center">
+                            <a href="#" class="more-btn"><span>Learn More</span> <i class="bi bi-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div><!-- End Why Box -->
+
+                <div class="col-lg-8 d-flex align-items-stretch">
+                    <div class="row gy-4" data-aos="fade-up" data-aos-delay="200">
+
+                        <div class="col-xl-4">
+                            <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                                <i class="bi bi-clipboard-data"></i>
+                                <h4>Corporis voluptates officia eiusmod</h4>
+                                <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
+                            </div>
+                        </div><!-- End Icon Box -->
+
+                        <div class="col-xl-4" data-aos="fade-up" data-aos-delay="300">
+                            <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                                <i class="bi bi-gem"></i>
+                                <h4>Ullamco laboris ladore lore pan</h4>
+                                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt</p>
+                            </div>
+                        </div><!-- End Icon Box -->
+
+                        <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
+                            <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                                <i class="bi bi-inboxes"></i>
+                                <h4>Labore consequatur incidid dolore</h4>
+                                <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
+                            </div>
+                        </div><!-- End Icon Box -->
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- /Why Us Section --> *@
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats section dark-background">
+
+        <img src="~/template/assets/img/img5payment.jpg" alt="" data-aos="fade-in">
+
+        <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-item text-center w-100 h-100">
+                        <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Clients</p>
+                    </div>
+                </div><!-- End Stats Item -->
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-item text-center w-100 h-100">
+                        <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Projects</p>
+                    </div>
+                </div><!-- End Stats Item -->
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-item text-center w-100 h-100">
+                        <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Hours Of Support</p>
+                    </div>
+                </div><!-- End Stats Item -->
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-item text-center w-100 h-100">
+                        <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
+                        <p>Workers</p>
+                    </div>
+                </div><!-- End Stats Item -->
+
+            </div>
+
+        </div>
+
+    </section><!-- /Stats Section -->
+    <!-- Menu Section -->
+   
+    @* <section id="menu" class="menu section">
+       
+        <style>
+            /* .menu-img {
+                width: 90%; 
+                height: 350px; 
+                object-fit: contain; 
+                border-radius: 8px; 
+                box-shadow: 0 1px 4px red; 
+            }
+
+            .menu-item {
+                text-align: center;
+                padding: 10px;
+            }
+
+                .menu-item h4 {
+                    margin-top: 10px;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+
+                .menu-item p {
+                    font-size: 14px;
+                    color: #555;
+                    margin: 5px 0;
+                }
+
+                .menu-item .price {
+                    display: block;
+                    margin-top: 8px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #d9232d; 
+                } */
+
+            .menu-item {
+                text-align: center;
+                padding: 15px;
+                border: 1px solid #f5c2c2; /* soft border */
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+                .menu-item:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+                }
+
+            /* image container */
+            .menu-img {
+                width: 100%;
+                height: 250px; /* fixed same height for all images */
+                object-fit: contain; /* crops but looks neat */
+                border-radius: 10px;
+                box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+                margin-bottom: 10px;
+            }
+
+        </style>
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Our Menu</h2>
+            <p><span>Check Our</span> <span class="description-title">Yummy Menu</span></p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <ul class="nav nav-tabs d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+
+                <li class="nav-item">
+                    <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#menu-starters">
+                        <h4>Dupatta</h4>
+                    </a>
+                </li><!-- End tab nav item -->
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-breakfast">
+                        <h4>Choli Materails</h4>
+                    </a><!-- End tab nav item -->
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-lunch">
+                        <h4>Ajrak Print</h4>
+                    </a>
+                </li><!-- End tab nav item -->
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-dinner">
+                        <h4>Embrodari work</h4>
+                    </a>
+                </li><!-- End tab nav item -->
+
+            </ul>
+
+            <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
+
+                <div class="tab-pane fade active show" id="menu-starters">
+
+                    <div class="tab-header text-center">
+                        <p>Menu</p>
+                        <h3>Dupatta</h3>
+                    </div>
+
+                    <div class="row gy-5">
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-1.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Magnam Tiste</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $5.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-2.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Aut Luia</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $14.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-3.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Est Eligendi</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $8.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-4.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Eos Luibusdam</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $12.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-5.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Eos Luibusdam</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $12.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-6.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Laboriosam Direva</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $9.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                    </div>
+                </div><!-- End Starter Menu Content -->
+
+                <div class="tab-pane fade" id="menu-breakfast">
+
+                    <div class="tab-header text-center">
+                        <p>Menu</p>
+                        <h3>Choli Materails</h3>
+                    </div>
+
+                    <div class="row gy-5">
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-1.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Magnam Tiste</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $5.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-2.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Aut Luia</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $14.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-3.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Est Eligendi</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $8.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-4.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Eos Luibusdam</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $12.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-5.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Eos Luibusdam</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $12.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-6.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Laboriosam Direva</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $9.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                    </div>
+                </div><!-- End Breakfast Menu Content -->
+
+                <div class="tab-pane fade" id="menu-lunch">
+
+                    <div class="tab-header text-center">
+                        <p>Menu</p>
+                        <h3>Ajrak Print</h3>
+                    </div>
+
+                    <div class="row gy-5">
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-1.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Magnam Tiste</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $5.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-2.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Aut Luia</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $14.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-3.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Est Eligendi</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $8.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-4.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Eos Luibusdam</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $12.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-5.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Eos Luibusdam</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $12.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/menu-item-6.png" class="glightbox"><img src="~/template/assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
+                            <h4>Laboriosam Direva</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $9.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                    </div>
+                </div><!-- End Lunch Menu Content -->
+
+                <div class="tab-pane fade" id="menu-dinner">
+
+                    <div class="tab-header text-center">
+                        <p>Menu</p>
+                        <h3>Embrodari work</h3>
+                    </div>
+
+                    <div class="row gy-5">
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/Embrodari work/e11.jpg" class="glightbox"><img src="~/template/assets/img/menu/Embrodari work/e11.jpg" class="menu-img img-fluid" alt=""></a>
+                            <h4>Magnam Tiste</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $5.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/Embrodari work/e2.jpg" class="glightbox"><img src="~/template/assets/img/menu/Embrodari work/e2.jpg" class="menu-img img-fluid" alt=""></a>
+                            <h4>Aut Luia</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $14.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/Embrodari work/e3.jpg" class="glightbox"><img src="~/template/assets/img/menu/Embrodari work/e3.jpg" class="menu-img img-fluid" alt=""></a>
+                            <h4>Est Eligendi</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $8.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/Embrodari work/e4.jpg" class="glightbox"><img src="~/template/assets/img/menu/Embrodari work/e4.jpg" class="menu-img img-fluid" alt=""></a>
+                            <h4>Eos Luibusdam</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $12.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/Embrodari work/e5.jpg" class="glightbox"><img src="~/template/assets/img/menu/Embrodari work/e5.jpg" class="menu-img img-fluid" alt=""></a>
+                            <h4>Eos Luibusdam</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $12.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                        <div class="col-lg-4 menu-item">
+                            <a href="~/template/assets/img/menu/Embrodari work/e6.jpg" class="glightbox"><img src="~/template/assets/img/menu/Embrodari work/e6.jpg" class="menu-img img-fluid" alt=""></a>
+                            <h4>Laboriosam Direva</h4>
+                            <p class="ingredients">
+                                Lorem, deren, trataro, filede, nerada
+                            </p>
+                            <p class="price">
+                                $9.95
+                            </p>
+                        </div><!-- Menu Item -->
+
+                    </div>
+                </div><!-- End Dinner Menu Content -->
+
+            </div>
+
+        </div>
+
+    </section><!-- /Menu Section --> *@
+
+    <!-- Trigger Button -->
+    <section id="menu" class="menu section">
+
+        <!-- Hidden Side Menu -->
+        <div id="sideMenu" class="side-menu">
+            <div class="menu-header">
+                <h3 class="categories-title">
+                    <img src="~/template/assets/img/3 LINE.jpeg" alt="Categories" class="cat-icon">
+                    Categories
+                </h3>
+
+            </div>
+            <ul class="main-categories">
+               
+                <li>
+                    <a asp-controller="Category" asp-action="Details" asp-route-name="Dupatta">Dupatta</a>
+                </li>
+
+               
+                <li>
+                    <a asp-controller="Category" asp-action="Details" asp-route-name="Embrodari & Handwork">
+                        Embrodari & Handwork
+                    </a>
+                </li>
+
+                
+                <li class="dropdown">
+                    <a href="#">Print Fabric ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Cotton Print">Cotton Print</a></li>
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Mal Cotton Print">Mal Cotton Print</a></li>
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Chikan Print">Chikan Print</a></li>
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Linan">Linan Print</a></li>
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Iikkat">Ikkat Print</a></li>
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Silk & Maslin Print">Silk & Maslin Print</a></li>
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Silk & Maslin Print">Silk & Maslin Print</a></li>
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Gamthi Print">Gamthi Print</a></li>
+                    </ul>
+                </li>
+
+               
+                <li class="dropdown">
+                    <a href="#">Plain Fabric ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Zara Cotton Plain">Zara Cotton Plain</a></li>
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Khadi Cotton Plain">Khadi Cotton Plain</a></li>
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Jam Cotton Plain">Jam Cotton Plain</a></li>
+                        <li><a asp-controller="Category" asp-action="Details" asp-route-name="Mal Cotton Plain">Mal Cotton Plain</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="menu-note">
+                <p>All types of dyeable fabrics are available, and fabric dyeing services will be provided.</p>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <p><strong>🔒 Login to view more details.</strong></p>
+                }
+            </div>
+           
+
+            <button class="close-btn" onclick="closeMenu()">Back</button>
+        </div>
+
+    </section>
+    
+    <style>
+        .dropdown-menu {
+            display: none;
+            list-style: none;
+            margin: 5px 0 0 15px;
+            padding: 0;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 5px 0;
+            text-decoration: none;
+            color: #333;
+        }
+
+            .dropdown-menu li a:hover {
+                color: #007bff;
+            }
+        .categories-title {
+            display: flex; 
+            align-items: center; 
+            font-size: 20px; 
+            font-weight: bold;
+            gap: 10px; 
+        }
+
+        .cat-icon {
+            width: 28px; 
+            height: 28px;
+            object-fit: contain; 
+            transition: transform 0.2s; 
+        }
+
+        .categories-title:hover .cat-icon {
+            transform: scale(1.1); 
+        }
+
+        /* Side Menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -280px; 
+            width: 250px;
+            height: 100%;
+            background: #fff;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            transition: left 0.3s ease;
+            z-index: 2000; /* higher than header */
+        }
+
+            .side-menu.active {
+                left: 0;
+            }
+
+            .side-menu .menu-header {
+                font-weight: bold;
+                margin-bottom: 15px;
+                font-size: 18px;
+                border-bottom: 1px solid #ccc;
+                padding-bottom: 10px;
+            }
+
+            .side-menu ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+                .side-menu ul li {
+                    margin: 10px 0;
+                }
+
+                    .side-menu ul li a {
+                        text-decoration: none;
+                        color: #333;
+                        font-size: 16px;
+                        display: block;
+                        padding: 8px 5px;
+                        border-radius: 5px;
+                        transition: background 0.2s;
+                    }
+
+                        .side-menu ul li a:hover {
+                            background: #f2f2f2;
+                        }
+
+            .side-menu .close-btn {
+                margin-top: 20px;   
+                width: 100%;
+                padding: 10px;
+                background: #d9232d;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+                border-radius: 5px;
+            }
+
+        .menu-note {
+            margin: 15px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-left: 4px solid #c0392b;
+            font-size: 14px;
+            color: #333;
+            border-radius: 6px;
+        }
+
+        .side-menu {
+            width: 250px; 
+            max-height: 750px; 
+            overflow-y: auto; 
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .menu-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+            .menu-list li {
+                margin: 5px 0;
+            }
+
+            .menu-list a {
+                text-decoration: none;
+                color: #333;
+            }
+
+                .menu-list a:hover {
+                    color: #007bff;
+                }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+    </style>
+
+    <script>
+        const menu = document.getElementById('sideMenu');
+        const menuLink = document.querySelector('a[href="#menu"]');
+
+        // Open menu when clicking on "Menu" link
+        menuLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            menu.classList.add('active');
+            document.body.classList.add('menu-open'); // Optional: to disable body scroll
+        });
+
+        // Close menu when clicking back button
+        function closeMenu() {
+            menu.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+
+        // Close when clicking outside the menu
+        document.addEventListener('click', function (e) {
+            if (menu.classList.contains('active') && !menu.contains(e.target) && !menuLink.contains(e.target)) {
+                closeMenu();
+            }
+        });
+
+        // Prevent menu click from propagating to the outside click handler
+        menu.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+    </script>
+
+
+
+    
+    <section id="testimonials" class="testimonials section light-background">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>CUSTOMER FEEDBACK</h2>
+            <p>What Our <span class="description-title">Happy Clients Say</span></p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="swiper init-swiper">
+                <script type="application/json" class="swiper-config">
+                    {
+                      "loop": true,
+                      "speed": 600,
+                      "autoplay": { "delay": 5000 },
+                      "slidesPerView": "auto",
+                      "pagination": { "el": ".swiper-pagination", "type": "bullets", "clickable": true }
+                    }
+                </script>
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <div class="row gy-4 justify-content-center">
+                                <div class="col-lg-6">
+                                    <div class="testimonial-content">
+                                        <p>
+                                            <i class="bi bi-quote quote-icon-left"></i>
+                                            <span>I bought dress materials from Ajay Fashion and the fabric quality is amazing. Perfect fitting and very stylish designs.</span>
+                                            <i class="bi bi-quote quote-icon-right"></i>
+                                        </p>
+                                        <h3>Dhruvi </h3>
+                                        <h4>Regular Customer</h4>
+                                        <div class="stars">
+                                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 text-center">
+                                    <img src="~/template/assets/img/testimonials/dhruvi.jpg" class="img-fluid testimonial-img" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End testimonial item -->
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <div class="row gy-4 justify-content-center">
+                                <div class="col-lg-6">
+                                    <div class="testimonial-content">
+                                        <p>
+                                            <i class="bi bi-quote quote-icon-left"></i>
+                                            <span>Best place for dress materials in Surat! They have latest fashion trends and unique fabrics at reasonable price.</span>
+                                            <i class="bi bi-quote quote-icon-right"></i>
+                                        </p>
+                                        <h3>Neha Shah</h3>
+                                        <h4>Fashion Enthusiast</h4>
+                                        <div class="stars">
+                                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 text-center">
+                                    <img src="~/template/assets/img/testimonials/client2.jpg" class="img-fluid testimonial-img" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End testimonial item -->
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <div class="row gy-4 justify-content-center">
+                                <div class="col-lg-6">
+                                    <div class="testimonial-content">
+                                        <p>
+                                            <i class="bi bi-quote quote-icon-left"></i>
+                                            <span>I ordered wholesale dress materials for my boutique – excellent service, timely delivery, and fantastic quality.</span>
+                                            <i class="bi bi-quote quote-icon-right"></i>
+                                        </p>
+                                        <h3>Manish Mehta</h3>
+                                        <h4>Boutique Owner</h4>
+                                        <div class="stars">
+                                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 text-center">
+                                    <img src="~/template/assets/img/testimonials/client3.jpg" class="img-fluid testimonial-img" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End testimonial item -->
+
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+        </div>
+
+    </section><!-- /Testimonials Section -->
+    <!-- Events Section -->
+    @* <section id="events" class="events section">
+
+        <div class="container-fluid" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="swiper init-swiper">
+                <script type="application/json" class="swiper-config">
+                    {
+                      "loop": true,
+                      "speed": 600,
+                      "autoplay": { "delay": 5000 },
+                      "slidesPerView": "auto",
+                      "pagination": { "el": ".swiper-pagination", "type": "bullets", "clickable": true },
+                      "breakpoints": {
+                        "320": { "slidesPerView": 1, "spaceBetween": 40 },
+                        "1200": { "slidesPerView": 3, "spaceBetween": 1 }
+                      }
+                    }
+                </script>
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(assets/img/events-fashion1.jpg)">
+                        <h3>Seasonal Collection</h3>
+                        <div class="price align-self-start">Flat 20% Off</div>
+                        <p class="description">
+                            Explore Ajay Fashion’s latest seasonal collection with premium quality dress materials in modern and traditional styles.
+                        </p>
+                    </div><!-- End Event item -->
+
+                    <div class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(assets/img/events-fashion2.jpg)">
+                        <h3>Wedding Specials</h3>
+                        <div class="price align-self-start">Starting ₹999</div>
+                        <p class="description">
+                            Beautiful fabrics and bridal dress materials for weddings. Make your special day more stylish with Ajay Fashion.
+                        </p>
+                    </div><!-- End Event item -->
+
+                    <div class="swiper-slide event-item d-flex flex-column justify-content-end" style="background-image: url(assets/img/events-fashion3.jpg)">
+                        <h3>Festive Collection</h3>
+                        <div class="price align-self-start">Upto 30% Off</div>
+                        <p class="description">
+                            Celebrate every festival in style with our exclusive festive wear dress materials and traditional fabrics.
+                        </p>
+                    </div><!-- End Event item -->
+
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+        </div>
+    </section><!-- /Events Section --> *@
+    <!-- Chefs Section -->
+    <section>
+        <div class="container section-title text-center" data-aos="fade-up" id="owner">
+            <h2>Owners</h2>
+            <p><span>Our</span> <span class="description-title">Professional Owners<br></span></p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+            <div class="row justify-content-center gy-4">
+
+                <div class="col-lg-3 col-md-4 col-sm-6 d-flex align-items-stretch mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="team-member text-center shadow rounded-3 p-4" style="transform: scale(1.2);">
+                        <div class="member-img mb-3">
+                            <img src="~/template/assets/img/chefs/o1.jpg"
+                                 class="img-fluid border border-2"
+                                 style="width:286px; height:286px; object-fit:cover;"
+                                 alt="Ajay Bhalodiya">
+                            <div class="social mt-2">
+                                @* <a href="#" class="me-2"><i class="bi bi-twitter"></i></a> *@
+                                <a href="#" class="me-2"><i class="bi bi-facebook"></i></a>
+                                <a href="#" class="me-2"><i class="bi bi-instagram"></i></a>
+                                @* <a href="#"><i class="bi bi-linkedin"></i></a> *@
+                            </div>
+                        </div>
+                        <div class="member-info">
+                            <h4>Ajay Bhalodiya</h4>
+                        </div>
+                    </div>
+                </div><!-- End Owner -->
+
+                <div class="col-lg-3 col-md-4 col-sm-6 d-flex align-items-stretch mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="team-member text-center shadow rounded-3 p-4" style="transform: scale(1.2);">
+                        <div class="member-img mb-3">
+                            <img src="~/template/assets/img/chefs/o.jpg"
+                                 class="img-fluid border border-2"
+                                 style="width:286px; height:286px; object-fit:cover;"
+                                 alt="Kirit Bhalodiya">
+                            <div class="social mt-2">
+                                @* <a href="#" class="me-2"><i class="bi bi-twitter"></i></a> *@
+                                <a href="#" class="me-2"><i class="bi bi-facebook"></i></a>
+                                <a href="#" class="me-2"><i class="bi bi-instagram"></i></a>
+                                @* <a href="#"><i class="bi bi-linkedin"></i></a> *@
+                            </div>
+                        </div>
+                        <div class="member-info">
+                            <h4>Kirit Bhalodiya</h4>
+                        </div>
+                    </div>
+                </div><!-- End Owner -->
+
+            </div>
+        </div>
+
+    <!-- End Owner -->
+
+    </section>
+    <!-- /Chefs Section -->
+    <!-- Book A Table Section -->
+    @* <section id="book-a-table" class="book-a-table section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Book A Table</h2>
+            <p><span>Book Your</span> <span class="description-title">Stay With Us<br></span></p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="row g-0" data-aos="fade-up" data-aos-delay="100">
+
+                <div class="col-lg-4 reservation-img" style="background-image: url(assets/img/reservation.jpg);"></div>
+
+                <div class="col-lg-8 d-flex align-items-center reservation-form-bg" data-aos="fade-up" data-aos-delay="200">
+                    <form action="forms/book-a-table.php" method="post" role="form" class="php-email-form">
+                        <div class="row gy-4">
+                            <div class="col-lg-4 col-md-6">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required="">
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required="">
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <input type="text" class="form-control" name="phone" id="phone" placeholder="Your Phone" required="">
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <input type="date" name="date" class="form-control" id="date" placeholder="Date" required="">
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <input type="time" class="form-control" name="time" id="time" placeholder="Time" required="">
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <input type="number" class="form-control" name="people" id="people" placeholder="# of people" required="">
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <textarea class="form-control" name="message" rows="5" placeholder="Message"></textarea>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <div class="loading">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">Your booking request was sent. We will call back or send an Email to confirm your reservation. Thank you!</div>
+                            <button type="submit">Book a Table</button>
+                        </div>
+                    </form>
+                </div><!-- End Reservation Form -->
+
+            </div>
+
+        </div>
+
+    </section><!-- /Book A Table Section --> *@
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery section light-background">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Gallery</h2>
+            <p><span>Check</span> <span class="description-title">Our Gallery</span></p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="swiper init-swiper">
+                <script type="application/json" class="swiper-config">
+                    {
+                      "loop": true,
+                      "speed": 600,
+                      "autoplay": {
+                        "delay": 5000
+                      },
+                      "slidesPerView": "auto",
+                      "centeredSlides": true,
+                      "pagination": {
+                        "el": ".swiper-pagination",
+                        "type": "bullets",
+                        "clickable": true
+                      },
+                      "breakpoints": {
+                        "320": {
+                          "slidesPerView": 1,
+                          "spaceBetween": 0
+                        },
+                        "768": {
+                          "slidesPerView": 3,
+                          "spaceBetween": 20
+                        },
+                        "1200": {
+                          "slidesPerView": 5,
+                          "spaceBetween": 20
+                        }
+                      }
+                    }
+                </script>
+                <div class="swiper-wrapper align-items-center">
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/dhruvi.jpg"><img src="~/template/assets/img/gallery/dhruvi.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g1 1.jpg"><img src="~/template/assets/img/gallery/g1 1.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g110.jpg"><img src="~/template/assets/img/gallery/g110.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g12.jpg"><img src="~/template/assets/img/gallery/g12.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g13.jpg"><img src="~/template/assets/img/gallery/g13.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g6.jpg"><img src="~/template/assets/img/gallery/g6.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g7.jpg"><img src="~/template/assets/img/gallery/g7.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g14.jpg"><img src="~/template/assets/img/gallery/g14.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g9.jpg"><img src="~/template/assets/img/gallery/g9.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g15.jpg"><img src="~/template/assets/img/gallery/g15.jpg" class="img-fluid" alt=""></a></div>
+                     <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g16.jpg"><img src="~/template/assets/img/gallery/g16.jpg" class="img-fluid" alt=""></a></div>
+                      <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g17.jpg"><img src="~/template/assets/img/gallery/g17.jpg" class="img-fluid" alt=""></a></div>
+                       <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g18.jpg"><img src="~/template/assets/img/gallery/g18.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g19.jpg"><img src="~/template/assets/img/gallery/g19.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g20.jpg"><img src="~/template/assets/img/gallery/g20.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g21.jpg"><img src="~/template/assets/img/gallery/g21.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g22.jpg"><img src="~/template/assets/img/gallery/g22.jpg" class="img-fluid" alt=""></a></div>
+                   
+                 
+
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+        </div>
+
+    </section><!-- /Gallery Section -->
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Contact</h2>
+            <p><span>Need Help?</span> <span class="description-title">Contact Us</span></p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="mb-5">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3670.1255128385295!2d72.8471443!3d21.1998805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04e55bf9a2ab3%3A0x77b5c307c0ce8f2!2sGujarat%20Housing%20Society%2C%202%2F25%2C%20Gujarat%20Housing%20Board%20Colony%2C%20Varachha%2C%20Surat%2C%20Gujarat%20395010!5e0!3m2!1sen!2sin!4v1692387600000!5m2!1sen!2sin"
+                        width="100%"
+                        height="400"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+
+
+            <div class="row gy-4">
+
+                <div class="col-md-6">
+                    <div class="info-item d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
+                        <i class="icon bi bi-geo-alt flex-shrink-0"></i>
+                        <div>
+                            <h3>Address</h3>
+                            <p>2/25 Ajay Fashion Gujarat Housing Board ,New bombay maket umarwada ,surat</p>
+                        </div>
+                    </div>
+                </div><!-- End Info Item -->
+
+                <div class="col-md-6">
+                    <div class="info-item d-flex align-items-center" data-aos="fade-up" data-aos-delay="300">
+                        <i class="icon bi bi-telephone flex-shrink-0"></i>
+                        <div>
+                            <h3>Call Us</h3>
+                            <p>9898248747 / 9898308449</p>
+                        </div>
+                    </div>
+                </div><!-- End Info Item -->
+
+                <div class="col-md-6">
+                    <div class="info-item d-flex align-items-center" data-aos="fade-up" data-aos-delay="400">
+                        <i class="icon bi bi-envelope flex-shrink-0"></i>
+                        <div>
+                            <h3>Email Us</h3>
+                            <p>kirit749@gmail.com</p>
+                        </div>
+                    </div>
+                </div><!-- End Info Item -->
+
+                <div class="col-md-6">
+                    <div class="info-item d-flex align-items-center" data-aos="fade-up" data-aos-delay="500">
+                        <i class="icon bi bi-clock flex-shrink-0"></i>
+                        <div>
+                            <h3>Opening Hours<br></h3>
+                            <p><strong>Mon-Sat:</strong> 9AM - 8PM; <strong>Sunday:</strong> 9AM - 1PM</p>
+                        </div>
+                    </div>
+                </div><!-- End Info Item -->
+
+            </div>
+
+            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="600">
+                <div class="row gy-4">
+
+                    <div class="col-md-6">
+                        <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+                    </div>
+
+                    <div class="col-md-6 ">
+                        <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+                    </div>
+
+                    <div class="col-md-12">
+                        <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+                    </div>
+
+                    <div class="col-md-12">
+                        <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                    </div>
+
+                    <div class="col-md-12 text-center">
+                        <div class="loading">Loading</div>
+                        <div class="error-message"></div>
+                        <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                        <button type="submit">Send Message</button>
+                    </div>
+
+                </div>
+            </form><!-- End Contact Form -->
+
+        </div>
+
+    </section><!-- /Contact Section -->
+
+</main>
+

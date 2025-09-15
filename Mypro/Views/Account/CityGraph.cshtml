@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "City-wise Customers";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container my-4">
+    <br />
+    <a href="javascript:history.back()" class="btn btn-light mb-3" style="font-size:20px; font-weight:bold;">←</a>
+
+    <h2 class="text-center mb-4" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color:#333;">
+        City-wise Customer Distribution
+    </h2>
+
+    <div class="card shadow-lg p-4" style="max-width: 600px; margin: auto;">
+        <!-- Dropdown for Chart Type -->
+        <div class="d-flex justify-content-center mb-3">
+            <select id="chartType" class="form-select w-50 me-2">
+                <option value="bar">Bar</option>
+                <option value="pie">Pie</option>
+                <option value="doughnut">Doughnut</option>
+                <option value="line">Line</option>
+                <option value="radar">Area</option>
+                <option value="bar-stacked">Stacked Bar</option>
+            </select>
+        </div>
+
+        <div class="chart-wrapper" style="height: 450px; width: 90%; margin: auto; background: #fff; border-radius: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                                            padding: 30px;">
+            <canvas id="cityChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<style>
+    h2 {
+        color: black;
+    }
+
+    body.theme-dark h2 {
+        color: white !important;
+    }
+
+    .chartjs-render-monitor:hover {
+        cursor: pointer;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const cityNames = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CityNames));
+    const customerCounts = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CustomerCounts));
+
+    let chartInstance;
+
+    function renderChart(type) {
+        const ctx = document.getElementById('cityChart').getContext('2d');
+
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        let isStacked = type === "bar-stacked";
+        let finalType = isStacked ? "bar" : type;
+
+        chartInstance = new Chart(ctx, {
+            type: finalType,
+            data: {
+                labels: cityNames,
+                datasets: [{
+                    // ✅ Label only for non-bar charts
+                    label: (type === "bar" || type === "bar-stacked") ? "" : "Customers per City",
+                    data: customerCounts,
+                    borderWidth: 1,
+                    borderRadius: 10,
+                    backgroundColor: function(context) {
+                        const colors = ['#4e73df','#1cc88a','#36b9cc','#f6c23e','#e74a3b','#858796','#fd7e14'];
+                        return colors[context.dataIndex % colors.length];
+                    },
+                    fill: type === "line" || type === "radar"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    // ✅ Hide legend only for bar & stacked bar
+                    legend: { display: type !== "bar" && type !== "bar-stacked" },
+                    tooltip: { enabled: true },
+                    title: {
+                        display: type === 'pie' || type === 'doughnut' || type === 'radar',
+                        text: 'Cities vs Number of Customers',
+                        color: 'black',
+                        font: { size: 18, weight: 'bold' }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Customers',
+                            color: 'black',
+                            font: { size: 16, weight: 'bold' }
+                        },
+                        ticks: {
+                            stepSize: 1,
+                            color: 'black',
+                            callback: function(value) {
+                                return Number.isInteger(value) ? value : null;
+                            }
+                        },
+                        grid: {
+                            borderDash: [5,5],
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Cities',
+                            color: 'black',
+                            font: { size: 16, weight: 'bold' }
+                        },
+                        ticks: { font: { size: 14 }, color: 'black' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    // Auto-update on dropdown change
+    document.getElementById('chartType').addEventListener('change', function () {
+        const selectedType = this.value;
+        renderChart(selectedType);
+    });
+
+    // Load initial chart
+    renderChart('bar');
+</script>

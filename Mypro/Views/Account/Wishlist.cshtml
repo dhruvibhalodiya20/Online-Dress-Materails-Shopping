@@ -1,0 +1,218 @@
+﻿@model List<Mypro.Models.Wishlist>
+
+@{
+    ViewData["Title"] = "My Wishlist";
+}
+
+<section class="wishlist-section container mt-1">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+
+        <a href="javascript:history.back()"
+           style="
+       position: absolute;
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       width: 45px;
+       height: 45px;
+       border-radius: 50%;
+       background-color: lightcoral;
+       color: #000;
+       font-size: 22px;
+       font-weight: bold;
+       text-decoration: none;
+       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+       left: 7%;
+       transition: all 0.3s ease;
+       z-index: 100;
+   "
+           onmouseover="this.style.backgroundColor='#e0e0e0'; this.style.transform='scale(1.1)';"
+           onmouseout="this.style.backgroundColor='lightcoral'; this.style.transform='scale(1)';">
+            ←
+        </a>
+
+
+       
+        <h2 class="fw-bold"
+            style="flex: 1; text-align: center; color: #000; font-family: 'Playfair Display', serif; font-size: 2.5rem; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+            My Wishlist
+        </h2>
+
+      
+        <div style="width: 40px;"></div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover shadow-sm rounded wishlist-table text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 150px;">Image</th>
+                        <th style="width: 200px;">Added On</th>
+                        <th style="width: 140px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (item.ImageId != null && item.ImageId > 0)
+                                {
+                                    <a asp-controller="Category" asp-action="ImageDetails" asp-route-id="@item.ImageId">
+                                        <img src="@Url.Content(item.CategoryImage?.ImagePath ?? item.ImageUrl)" class="wishlist-img" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    <img src="@Url.Content(item.ImageUrl)" class="wishlist-img" />
+                                }
+
+
+                            </td>
+                            <td>@item.AddedOn.ToString("dd MMM yyyy")</td>
+                            <td>
+                                <form method="post" asp-controller="Account" asp-action="RemoveFromWishlist">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-outline-danger remove-btn">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center my-5">
+            <i class="bi bi-heart fs-1 text-muted mb-3"></i>
+            <p class="fs-5 text-muted">Your wishlist is empty. Start adding items you love ❤️</p>
+        </div>
+    }
+</section>
+<br /><br /><br /><br /><br /><br />
+<div id="zoomModal" class="zoom-modal" onclick="closeZoom()">
+    <img id="zoomedImg" class="zoomed-img" />
+</div>
+
+<script>
+    function openZoom(img) {
+        document.getElementById("zoomModal").style.display = "flex";
+        document.getElementById("zoomedImg").src = img.src;
+    }
+
+    function closeZoom() {
+        document.getElementById("zoomModal").style.display = "none";
+    }
+</script>
+
+<style>
+    /* body {
+        background-image: url('/template/assets/img/bag.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    } */
+
+    body {
+        position: relative;
+        background-image: url('/template/assets/img/bag.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+       
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.2); 
+            z-index: -1;
+        }
+
+
+    .wishlist-section {
+        color: #fff;
+        background-color: transparent;
+    }
+
+    .wishlist-table {
+        max-width: 800px;
+        margin: auto;
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: transparent !important;
+        color: #fff;
+    }
+
+        .wishlist-table thead {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+        }
+
+        .wishlist-table tbody tr {
+            background-color: transparent !important;
+        }
+
+        .wishlist-table th,
+        .wishlist-table td {
+            padding: 15px;
+            vertical-align: middle !important;
+        }
+
+    .wishlist-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+        .wishlist-img:hover {
+            transform: scale(1.05);
+        }
+
+    .remove-btn {
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+        .remove-btn:hover {
+            transform: scale(1.15);
+            background-color: #dc3545;
+        }
+
+    .zoom-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        justify-content: center;
+        align-items: center;
+        z-index: 1050;
+        cursor: zoom-out;
+    }
+
+    .zoomed-img {
+        max-width: 85%;
+        max-height: 85%;
+        border-radius: 12px;
+    }
+</style>

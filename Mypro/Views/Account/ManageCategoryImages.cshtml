@@ -1,0 +1,250 @@
+﻿@model X.PagedList.IPagedList<Mypro.Models.CategoryImage>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+
+@{
+    ViewBag.Title = "Manage Category Images";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<br />
+<br />
+<a href="javascript:history.back()" class="btn btn-light mb-3" style="font-size:20px; font-weight:bold;">←</a>
+
+<h2>Manage Category Images</h2>
+
+<style>
+    h2 {
+        color: black;
+    }
+    body.theme-dark h2 {
+        color: white !important;
+    }
+    .page-size-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .page-size-container label {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+   
+    .k-grid {
+        margin-top: 15px;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1050;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.8);
+    }
+</style>
+
+<!-- Filter Form -->
+<form method="get" asp-action="ManageCategoryImages" class="mb-3 d-flex gap-2">
+    <select name="selectedCategory" class="form-control" style="width:200px;">
+        <option value="">-- Select Category --</option>
+        @foreach (var cat in ViewBag.Categories)
+        {
+            <option value="@cat.CategoryId" selected="@(ViewBag.SelectedCategory != null && (int)ViewBag.SelectedCategory == cat.CategoryId)">
+                @cat.CategoryName
+            </option>
+        }
+    </select>
+
+    <select name="selectedColor" class="form-control" style="width:200px;">
+        <option value="">-- Select Color --</option>
+        @foreach (var color in ViewBag.Colors)
+        {
+            <option value="@color" selected="@(ViewBag.SelectedColor != null && ViewBag.SelectedColor.ToString() == color)">
+                @color
+            </option>
+        }
+    </select>
+
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a asp-action="ManageCategoryImages" class="btn btn-secondary">Reset</a>
+</form>
+
+<!-- Page Size Dropdown -->
+<div class="page-size-container">
+    <form method="get" asp-action="ManageCategoryImages" id="pageSizeForm">
+        <input type="hidden" name="selectedCategory" value="@ViewBag.SelectedCategory" />
+        <input type="hidden" name="selectedColor" value="@ViewBag.SelectedColor" />
+        <input type="hidden" name="page" value="@Model.PageNumber" />
+
+        <label for="pageSize">Records per page:</label>
+        <select name="pageSize" id="pageSize" class="form-control d-inline-block" style="width:100px;">
+            @{
+                int[] sizes = new int[] { 10, 15, 20, 25, 30 };
+                foreach (var size in sizes)
+                {
+                    <option value="@size" selected="@(ViewBag.PageSize == size)">
+                        @size
+                    </option>
+                }
+            }
+        </select>
+    </form>
+</div>
+
+<a asp-action="AddCategoryImage" class="btn btn-primary mb-3">Add Image</a>
+
+<!-- Table -->
+<table class="table table-bordered" id="imagesTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Category</th>
+            <th>Color</th>
+            <th>Hex Color</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var img in Model)
+        {
+            <tr>
+                <td>@img.ImageId</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm view-btn"
+                            data-img="@Url.Content(img.ImagePath)">
+                        View
+                    </button>
+                </td>
+                <td>@img.Category?.CategoryName</td>
+                <td>@img.Color</td>
+                <td>@img.HexColor</td>
+                <td>
+                    @{
+                        var shortDesc = string.IsNullOrEmpty(img.Description)
+                            ? ""
+                            : (img.Description.Length > 50
+                                ? img.Description.Substring(0, 50) + "..."
+                                : img.Description);
+                    }
+                    <span>@shortDesc</span>
+                    @if (!string.IsNullOrEmpty(img.Description) && img.Description.Length > 50)
+                    {
+                        <a href="javascript:void(0);" 
+                           class="text-primary view-desc" 
+                           data-desc="@img.Description">
+                           View More
+                        </a>
+                    }
+                </td>
+                <td>
+                    <a asp-action="EditCategoryImage" asp-route-id="@img.ImageId" class="btn btn-warning btn-sm" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+
+                    <a asp-action="DeleteCategoryImage" asp-route-id="@img.ImageId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this image?');" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Image Modal -->
+<div id="imageModal" class="modal">
+    <span id="modalClose" style="position:absolute; top:20px; right:35px; color:white; font-size:40px; cursor:pointer;">&times;</span>
+    <img id="modalImg" style="margin:auto; display:block; max-width:80%; max-height:80%; margin-top:5%;" />
+</div>
+
+<!-- Pagination -->
+<div class="d-flex justify-content-end mt-4">
+    @Html.PagedListPager(
+        Model,
+        page => Url.Action("ManageCategoryImages", new {
+            page,
+            pageSize = ViewBag.PageSize,
+            selectedColor = ViewBag.SelectedColor,
+            selectedCategory = ViewBag.SelectedCategory
+        }),
+        new PagedListRenderOptions
+        {
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            MaximumPageNumbersToDisplay = 5,
+            UlElementClasses = new[] { "pagination" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        }
+    )
+</div>
+
+@section Scripts {
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.1.117/js/kendo.all.min.js"></script>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2023.1.117/styles/kendo.bootstrap-v4.min.css" />
+
+    <script>
+        $(document).ready(function () {
+           
+            $("#imagesTable").kendoGrid({
+                sortable: true,
+                filterable: true,
+                pageable: false, 
+                columns: [
+                    { field: "ImageId", title: "ID", width: 70 },
+                    { field: "Image", title: "Image", width: 120 },
+                    { field: "Category", title: "Category", width: 150 },
+                    { field: "Color", title: "Color", width: 100 },
+                    { field: "HexColor", title: "Hex Color", width: 120 },
+                    { field: "Description", title: "Description", width: 250 },
+                    { field: "Actions", title: "Actions", width: 150 }
+                ]
+            });
+
+        
+            $("select.form-control").kendoDropDownList();
+            $(".btn").kendoButton();
+
+           
+            $("#pageSize").change(function () {
+                $("#pageSizeForm").submit();
+            });
+
+            
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImg");
+            const modalClose = document.getElementById("modalClose");
+
+            $(".view-btn").on("click", function () {
+                const imgSrc = $(this).data("img");
+                modalImg.src = imgSrc;
+                modal.style.display = "block";
+            });
+
+            $("#modalClose").on("click", function () {
+                modal.style.display = "none";
+            });
+
+            $("#imageModal").on("click", function (e) {
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+
+            // View More Description
+            $(".view-desc").on("click", function () {
+                alert($(this).data("desc"));
+            });
+        });
+    </script>
+}

@@ -1,0 +1,46 @@
+﻿@model Mypro.Models.Category
+@{
+    ViewBag.Title = "Edit Category";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<br />
+<br />
+<a href="javascript:history.back()" class="btn btn-light mb-3" style="font-size:20px; font-weight:bold;">←</a>
+
+<h2>Edit Category</h2>
+
+<style>
+    h2 {
+        color: black;
+    }
+
+    body.theme-dark h2 {
+        color: white !important;
+    }
+
+    label {
+        color: black;
+    }
+
+    body.theme-dark label {
+        color: white !important;
+    }
+</style>
+
+
+<form asp-action="EditCategory" method="post">
+    <input type="hidden" asp-for="CategoryId" />
+    <div class="form-group">
+        <label asp-for="CategoryName">CategoryName</label>
+        <input asp-for="CategoryName" class="form-control" />
+        <span asp-validation-for="CategoryName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryType">CategoryType</label>
+        <input asp-for="CategoryType" class="form-control" />
+        <span asp-validation-for="CategoryType" class="text-danger"></span>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-action="ManageCategories" asp-controller="Account" class="btn btn-secondary">Cancel</a>
+</form>

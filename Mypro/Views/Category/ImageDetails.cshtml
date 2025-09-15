@@ -1,0 +1,323 @@
+﻿@model Mypro.Models.CategoryImage
+@{
+    ViewData["Title"] = "Image Details";
+    Layout = "~/Views/Shared/head_foot.cshtml";
+}
+
+<a href="javascript:history.back()" class="back-btn"> ← </a>
+
+<section class="image-details">
+    <div class="overlay"></div>
+    <div class="container py-5">
+        <div class="row justify-content-center align-items-center g-5">
+
+           
+            <div class="col-md-5 text-center">
+                <div class="image-wrapper shadow-lg">
+                    <img src="@Url.Content(Model.ImagePath)"
+                         alt="Image"
+                         class="detail-img animate-img"
+                         onclick="openZoom(this)" />
+                </div>
+            </div>
+
+         
+            <div class="col-md-7">
+                <div class="detail-card p-4 shadow-lg">
+                    <center> <strong> <h1 class="fw-bold mb-4 text-gradient">@Model.Category.CategoryName</h1> </strong></center>
+
+                    <ul class="list-unstyled info-list">
+                        <li>
+                            <i class="bi bi-palette2 icon"></i>
+                            <span class="label">Color:</span>
+                            @(string.IsNullOrEmpty(Model.Color) ? "Not Available" : Model.Color)
+                        </li>
+                        <li>
+                            <i class="bi bi-droplet-half icon"></i>
+                            <span class="label">Hex Color:</span>
+                            @if (!string.IsNullOrEmpty(Model.HexColor))
+                            {
+                                <span class="color-circle" style="background-color:@Model.HexColor;"></span>
+                                @Model.HexColor
+                            }
+                            else
+                            {
+                                <span>Not Available</span>
+                            }
+                        </li>
+                        <li>
+                            <i class="bi bi-card-text icon"></i>
+                            <span class="label">Description:</span>
+                            @(string.IsNullOrEmpty(Model.Description) ? "Not Available" : Model.Description)
+                        </li>
+                    </ul>
+
+                   
+                    <div class="d-flex gap-3 mt-4 flex-wrap">
+                       
+                        <form asp-controller="Account" asp-action="AddToWishlist" method="post">
+                            <input type="hidden" name="imageId" value="@Model.ImageId" />
+                            <button type="submit" class="btn btn-gradient">
+                                <i class="bi bi-heart-fill"></i> Add to Wishlist
+                            </button>
+                        </form>
+
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form asp-controller="Account" asp-action="AddToCart" method="post">
+                                <input type="hidden" name="imageId" value="@Model.ImageId" />
+                                <button type="submit" class="btn btn-buy">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a class="btn btn-buy" asp-controller="Account" asp-action="Login">
+                                Login to Add
+                            </a>
+                        }
+
+
+
+                       
+                        @* <button class="btn btn-purchase">
+                            <i class="bi bi-cash-stack"></i> Buy Now
+                        </button> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div id="zoomModal" class="zoom-modal" onclick="closeZoom()">
+    <img id="zoomedImg" class="zoomed-img" />
+</div>
+
+<style>
+   
+    .image-details {
+        position: relative;
+        min-height: 100vh;
+        background: url("https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1950&q=80") no-repeat center center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(255,255,255,0.3);
+        z-index: 0;
+    }
+
+    /* Back button */
+    .back-btn {
+        position: absolute;
+        top: 40px;
+        left: 30px;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border-radius: 50%;
+        font-size: 22px;
+        font-weight: bold;
+        color: #444;
+        text-decoration: none;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+
+        .back-btn:hover {
+            background: #FF416C;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+    /* Image styling fixed size */
+    .image-wrapper {
+        border-radius: 20px;
+        overflow: hidden;
+        animation: fadeUp 1s ease forwards;
+         background:none;
+        padding: 0;
+    }
+
+    .detail-img {
+        width: 500px;
+        height: 500px; 
+        object-fit: cover; 
+        border-radius: 20px;
+        cursor: zoom-in;
+        transition: transform 0.4s ease, filter 0.3s ease;
+        filter: brightness(1.05) contrast(1.1);
+    }
+
+        .detail-img:hover {
+            transform: scale(1.08);
+            filter: brightness(1.1) contrast(1.15);
+        }
+
+    keyframes fadeUp {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .detail-card {
+        background: rgba(0, 0, 0, 0.55); 
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        color: #fff;
+        animation: fadeIn 1.2s ease;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+    keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    }
+
+    .text-gradient {
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .info-list li {
+        font-size: 1.1rem;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .label {
+        font-weight: bold;
+        margin-right: 6px;
+    }
+
+    .icon {
+        font-size: 1.4rem;
+        color: #ff416c;
+    }
+
+    .color-circle {
+        display: inline-block;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        margin-right: 6px;
+        vertical-align: middle;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    /* Buttons */
+    .btn {
+        border: none;
+        padding: 12px 26px;
+        border-radius: 30px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(135deg, #FF416C, #FF4B2B);
+        color: #fff;
+    }
+
+        .btn-gradient:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 18px rgba(255,65,108,0.6);
+        }
+
+    .btn-buy {
+        background: linear-gradient(135deg, #42e695, #3bb2b8);
+        color: #fff;
+    }
+
+        .btn-buy:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(66,230,149,0.5);
+        }
+
+    .btn-purchase {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: #fff;
+    }
+
+        .btn-purchase:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(106,17,203,0.5);
+        }
+
+    /* Zoom Modal */
+    .zoom-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.95);
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        cursor: zoom-out;
+    }
+
+    .zoomed-img {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 12px;
+        animation: zoomIn 0.3s ease-in-out;
+    }
+    keyframes zoomIn {
+        from
+
+    {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    }
+</style>
+
+<script>
+    function openZoom(img) {
+        document.getElementById("zoomModal").style.display = "flex";
+        document.getElementById("zoomedImg").src = img.src;
+    }
+    function closeZoom() {
+        document.getElementById("zoomModal").style.display = "none";
+    }
+</script>

@@ -1,0 +1,100 @@
+﻿@model Mypro.Models.CategoryImageVM
+@{
+    ViewBag.Title = "Add Category Image";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<br />
+<br />
+<a href="javascript:history.back()" class="btn btn-light mb-3" style="font-size:20px; font-weight:bold;">←</a>
+
+<h2>Add Category Image</h2>
+
+<style>
+    h2 {
+        color: black;
+    }
+
+    body.theme-dark h2 {
+        color: white !important;
+    }
+
+    label {
+        color: black;
+    }
+
+    body.theme-dark label {
+        color: white !important;
+    }
+</style>
+
+
+
+<form asp-action="AddCategoryImage" asp-controller="Account" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label>Upload Image</label>
+        <input type="file" class="form-control" name="ImageFile" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+            <option value="0">-- Select Category --</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Color"></label>
+        <input asp-for="Color" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="HexColor"></label>
+        <input asp-for="HexColor" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter image description"></textarea>
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Add</button>
+    <a asp-action="ManageCategoryImages" asp-controller="Account" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+@* <form asp-action="AddCategoryImage" asp-controller="Account" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="ImagePath">ImagePath</label>
+        <input asp-for="ImagePath" class="form-control" placeholder="Enter image URL or path" />
+        <span asp-validation-for="ImagePath" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId">Select Category</label>
+        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "CategoryId", "CategoryName"))"></select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Color">Color</label>
+        <input asp-for="Color" class="form-control" />
+        <span asp-validation-for="Color" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="HexColor">HexColor</label>
+        <input asp-for="HexColor" class="form-control" />
+        <span asp-validation-for="HexColor" class="text-danger"></span>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-success">Add</button>
+    <a asp-action="ManageCategoryImages" asp-controller="Account" class="btn btn-secondary">Cancel</a>
+   
+</form> *@

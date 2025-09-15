@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Ajay Fashion</title>
+
+    <!-- Favicons -->
+    <link href="~/template/assets/img/favicon.png" rel="icon" />
+    <link href="~/template/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Inter&display=swap" rel="stylesheet" />
+
+    <!-- Vendor CSS -->
+    <link href="~/template/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/template/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/template/assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link href="~/template/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+    <link href="~/template/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    <!-- Main CSS -->
+    <link href="~/template/assets/css/main.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body class="index-page">
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+
+            <a href="~/Home/Index" class="logo d-flex align-items-center me-auto me-xl-0">
+                <img src="~/template/assets/img/mylogo.png" alt="FashionRack Logo" class="logo-img">
+                <h1><span class="logo-text">FashionRack.</span></h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="#hero" class="active nav-link-gradient">Home</a></li>
+                    <li><a href="#about" class="nav-link-gradient">About</a></li>
+                    <li><a href="#menu" class="nav-link-gradient">Menu</a></li>
+                    <li><a href="#events" class="nav-link-gradient">Events</a></li>
+                    <li><a href="#owner" class="nav-link-gradient">Owner</a></li>
+                    <li><a href="#gallery" class="nav-link-gradient">Gallery</a></li>
+                    <li><a href="#contact" class="nav-link-gradient">Contact</a></li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            @* @if (User.Identity.IsAuthenticated)
+            {
+                <div class="d-flex align-items-center">
+                    <span class="me-3">Welcome, @User.Identity.Name!</span>
+                    <a class="btn btn-sm btn-primary me-2" asp-controller="User" asp-action="EditProfile">Profile</a>
+                    <form method="post" asp-controller="Account" asp-action="Logout" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger">Logout</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <a class="btn-getstarted" asp-controller="Account" asp-action="Login">Login / Register</a>
+            } *@
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                var db = Context.RequestServices.GetService<ApplicationDbContext>();
+                var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+                var customer = db.Customers.FirstOrDefault(c => c.Email == email);
+
+                <div class="d-flex align-items-center">
+                   
+
+                    @if (!string.IsNullOrEmpty(customer?.PhotoPath))
+                    {
+                        
+                        <img src="~/uploads/@customer.PhotoPath"
+                             class="rounded-circle"
+                             style="width:35px; height:35px; object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center"
+                             style="width:35px; height:35px; font-weight:bold;">
+                            @User.Identity.Name.Substring(0, 1).ToUpper()
+                        </div>
+                    }
+                    <br /><div class="d-flex align-items-center">
+                        <span class="me-3">Welcome, @User.Identity.Name!</span>
+                        <a class="btn btn-sm btn-primary me-2" asp-controller="User" asp-action="EditProfile">Profile</a>
+                        <form method="post" asp-controller="Account" asp-action="Logout" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <a class="btn-getstarted" asp-controller="Account" asp-action="Login">Login / Register</a>
+            }
+
+
+        </div>
+    </header>
+    <!-- End Header -->
+    <!-- ======= Main Content ======= -->
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+    <!-- End Main Content -->
+    <!-- ======= Footer ======= -->
+    <br /><br /><br /><br /><br /><br /><br />
+    <footer id="footer" class="footer dark-background">
+        <div class="container">
+            <div class="row gy-3">
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-geo-alt icon"></i>
+                    <div class="address">
+                        <h4>Address</h4>
+                        <p>2/25 Ajay Fashion Gujarat Housing Board, Bombay Market, Umarwada, Surat</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-telephone icon"></i>
+                    <div>
+                        <h4>Contact</h4>
+                        <p>
+                            <strong>Phone:</strong> <span>9898308449</span><br>
+                            <strong>Email:</strong> <span>kirit749@gmail.com</span><br>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-clock icon"></i>
+                    <div>
+                        <h4>Opening Hours</h4>
+                        <p>
+                            <strong>Mon-Sat:</strong> <span>9AM - 8PM</span><br>
+                            <strong>Sunday</strong>: <span>9AM - 1PM</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4>Follow Us</h4>
+                    <div class="social-links d-flex">
+                        @* <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a> *@
+                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                        @* <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container copyright text-center mt-4">
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">Ajay Fashion</strong> <span>All Rights Reserved</span></p>
+            @* <div class="credits">
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href="https://themewagon.com">ThemeWagon</a>
+            </div> *@
+        </div>
+    </footer>
+    <!-- End Footer -->
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="~/template/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/template/assets/vendor/php-email-form/validate.js"></script>
+    <script src="~/template/assets/vendor/aos/aos.js"></script>
+    <script src="~/template/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/template/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="~/template/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="~/template/assets/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+
+    <style>
+        /* Logo Styles */
+        .logo-img {
+            transform: scale(2.1);
+            height: auto;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-text {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #f7941d, #ec008c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* === Compact Navigation Menu === */
+        .navmenu {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            height: auto;
+            flex-shrink: 1;
+            white-space: nowrap;
+        }
+
+            .navmenu ul {
+                display: flex;
+                align-items: center;
+                gap: 10px; /* Less space between menu items */
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+                .navmenu ul li {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                    .navmenu ul li a {
+                        font-weight: 600;
+                        font-size: 0.95rem;
+                        padding: 4px 6px;
+                        line-height: 1.2;
+                        text-decoration: none;
+                        background: linear-gradient(45deg, #f7941d, #ec008c);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        display: inline-block;
+                        transition: color 0.2s ease-in-out;
+                    }
+
+                        .navmenu ul li a:hover {
+                            background: linear-gradient(45deg, #ec008c, #f7941d);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                        }
+    </style>
+
+</body>
+</html>

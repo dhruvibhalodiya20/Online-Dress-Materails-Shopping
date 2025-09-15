@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; 
+}
+
+<br /><br /><br />
+<div class="row g-4">
+    <!-- Total Customers -->
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="stat-card p-4 shadow-lg rounded-4 text-center">
+            <div class="stat-icon mb-3">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <h5 class="mb-1">Total Customers</h5>
+            <h2 class="fw-bold mb-0">@ViewBag.TotalCustomers</h2>
+        </div>
+    </div>
+
+@*     <!-- Total Cities -->
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="stat-card p-4 shadow-lg rounded-4 text-center">
+            <div class="stat-icon mb-3">
+                <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <h5 class="mb-1">Total Cities</h5>
+            <h2 class="fw-bold mb-0">@ViewBag.TotalCities</h2>
+        </div>
+    </div>
+</div> *@
+
+    <!-- Total Cities -->
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        <a href="@Url.Action("CityGraph", "Account")" class="text-decoration-none">
+            <div class="stat-card p-4 shadow-lg rounded-4 text-center">
+                <div class="stat-icon mb-3">
+                    <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <h5 class="mb-1">Total Cities</h5>
+                <h2 class="fw-bold mb-0">@ViewBag.TotalCities</h2>
+            </div>
+        </a>
+    </div>
+
+
+<style>
+    :root {
+        --card-bg-light: #ffffff;
+        --card-bg-dark: #1e1e1e;
+        --text-light: #333;
+        --text-dark: #f5f5f5;
+        --icon-light: #0d6efd;
+        --icon-dark: #4dabf7;
+    }
+
+    .stat-card {
+        background: var(--card-bg-light);
+        color: var(--text-light);
+        transition: all 0.3s ease;
+        border: none;
+        width: 300px; 
+        height: 200px;
+    }
+
+    .stat-icon {
+        font-size: 3rem;
+        color: var(--icon-light);
+    }
+
+    /* Dark mode support */
+    media (prefers-color-scheme: dark) {
+        .stat-card
+
+    {
+        background: var(--card-bg-dark);
+        color: var(--text-dark);
+    }
+
+    .stat-icon {
+        color: var(--icon-dark);
+    }
+
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    
+
+    }
+</style>

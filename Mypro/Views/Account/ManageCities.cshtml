@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Mypro.Models.City>
+@{
+    ViewBag.Title = "Manage Cities";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<br />
+<br />
+<a href="javascript:history.back()" class="btn btn-light mb-3" style="font-size:20px; font-weight:bold;">←</a>
+
+<h2 class="mb-4">Manage City</h2>
+
+<style>
+    h2 {
+        color: black;
+    }
+
+    body.theme-dark h2 {
+        color: white !important;
+    }
+</style>
+
+<a asp-action="CreateCity" class="btn btn-success mb-3">+ Add City</a>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>City ID</th>
+            <th>City Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var city in Model)
+        {
+            <tr>
+                <td>@city.CityId</td>
+                <td>@city.CityName</td>
+                <td>
+                    <a asp-action="EditCity" asp-route-id="@city.CityId" class="btn btn-warning btn-sm" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+
+                    <a asp-action="DeleteCity" asp-route-id="@city.CityId" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Are you sure you want to delete this city?');" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
