@@ -23,6 +23,8 @@ namespace Mypro.Models
         public decimal FinalAmount { get; set; }          // subtotal - totalDiscount + GST
         public string PaymentMethod { get; set; }
 
+        // ✅ Add this new property
+        public bool IsCancelled { get; set; } = false;
         public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }

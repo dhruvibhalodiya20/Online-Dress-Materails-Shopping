@@ -115,6 +115,23 @@
                                 <h6>GST: ₹@order.GSTAmount</h6>
                                 <h5 class="fw-bold text-success mt-2">Final Amount: ₹@order.FinalAmount</h5>
                             </div>
+
+                                @if (!order.IsCancelled)
+                                {
+                                    <form asp-action="CancelOrder" asp-controller="Order" method="post" class="mt-2">
+                                        <input type="hidden" name="id" value="@order.Id" />
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Are you sure you want to cancel this order?');">
+                                            ❌ Cancel Order
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger mt-2">Cancelled</span>
+                                }
+
+
                         </div>
                     </div>
                 </div>

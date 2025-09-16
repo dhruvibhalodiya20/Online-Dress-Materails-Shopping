@@ -179,5 +179,26 @@ namespace Mypro.Controllers
             return View(orders);
         }
 
+        [HttpPost]
+        public IActionResult CancelOrder(int id)
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            var userId = User.FindFirstValue(ClaimTypes.Email);
+
+            var order = _abc.Orders.FirstOrDefault(o => o.Id == id && o.UserId == userId);
+            if (order == null)
+                return NotFound();
+
+            // Mark as cancelled
+            order.IsCancelled = true;
+            _abc.SaveChanges();
+
+            TempData["Success"] = $"Order #{order.Id} has been cancelled.";
+            return RedirectToAction("MyOrders");
+        }
+
+
     }
 }

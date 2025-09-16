@@ -15,12 +15,9 @@ namespace Mypro.Models
         public DbSet<CategoryImage> CategoryImages { get; set; }
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
-
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
 
-
+        
     }
-
-
 }

@@ -2,6 +2,30 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<a href="javascript:history.back()"
+   style="
+       position: absolute;
+
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       width: 45px;
+       height: 45px;
+       border-radius: 50%;
+       background-color: lightcoral;
+       color: #000;
+       font-size: 22px;
+       font-weight: bold;
+       text-decoration: none;
+       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+       left: 7%;
+       transition: all 0.3s ease;
+       z-index: 100;
+   "
+   onmouseover="this.style.backgroundColor='#e0e0e0'; this.style.transform='scale(1.1)';"
+   onmouseout="this.style.backgroundColor='lightcoral'; this.style.transform='scale(1)';">
+    ←
+</a>
 
 <div class="container my-5">
     <!-- Order Confirmation Header -->
