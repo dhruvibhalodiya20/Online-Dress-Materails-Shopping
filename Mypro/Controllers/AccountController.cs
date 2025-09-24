@@ -21,6 +21,9 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using X.PagedList;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using System.Security.Claims;
 
 
 
@@ -636,7 +639,33 @@ namespace Mypro.Controllers
         //    return View(cartItems);
         //}
 
-       
+
+        //public IActionResult Cart()
+        //{
+        //    if (!User.Identity.IsAuthenticated)
+        //        return RedirectToAction("Login", "Account");
+
+        //    var userId = User.FindFirstValue(ClaimTypes.Email);
+
+        //    var cartItems = _abc.CartItems
+        //        .Include(c => c.Image)
+        //        .ThenInclude(i => i.Category)
+        //        .Where(c => c.UserId == userId)
+        //        .ToList();
+
+        //    // Determine if first order
+        //    bool isFirstOrder = !_abc.Orders.Any(o => o.UserId == userId);
+        //    ViewBag.IsFirstOrder = isFirstOrder;
+        //    ViewBag.OrderDiscountPercent = isFirstOrder ? 5m : 2m;
+
+        //    // date-based discount
+        //    var day = DateTime.Now.Day;
+        //    decimal dateDiscountPercent = day <= 10 ? 4m : day <= 20 ? 3m : 2m;
+        //    ViewBag.DateDiscountPercent = dateDiscountPercent;
+
+        //    return View(cartItems);
+        //}
+
         public IActionResult Cart()
         {
             if (!User.Identity.IsAuthenticated)
@@ -644,25 +673,53 @@ namespace Mypro.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.Email);
 
+            // Get cart items (for listing in UI) via EF (you can also use proc's first resultset if you prefer)
             var cartItems = _abc.CartItems
                 .Include(c => c.Image)
                 .ThenInclude(i => i.Category)
                 .Where(c => c.UserId == userId)
                 .ToList();
 
-            // Determine if first order
-            bool isFirstOrder = !_abc.Orders.Any(o => o.UserId == userId);
-            ViewBag.IsFirstOrder = isFirstOrder;
-            ViewBag.OrderDiscountPercent = isFirstOrder ? 5m : 2m;
+           
+            using (var conn = new SqlConnection(_abc.Database.GetDbConnection().ConnectionString))
+            using (var cmd = new SqlCommand("sp_GetCartSummary", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UserId", userId ?? (object)DBNull.Value);
+                conn.Open();
 
-            // date-based discount
-            var day = DateTime.Now.Day;
-            decimal dateDiscountPercent = day <= 10 ? 4m : day <= 20 ? 3m : 2m;
-            ViewBag.DateDiscountPercent = dateDiscountPercent;
+                using (var reader = cmd.ExecuteReader())
+                {
+                    
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read()) {  }
+                    }
+
+                    if (reader.NextResult()) 
+                    {
+                        while (reader.Read()) {  }
+                    }
+
+                    if (reader.NextResult() && reader.Read()) 
+                    {
+                        ViewBag.SubTotal = reader["SubTotal"];
+                        ViewBag.OrderDiscountPercent = reader["OrderDiscountPercent"];
+                        ViewBag.OrderDiscountAmount = reader["OrderDiscountAmount"];
+                        ViewBag.DateDiscountPercent = reader["DateDiscountPercent"];
+                        ViewBag.DateDiscountAmount = reader["DateDiscountAmount"];
+                        ViewBag.TotalDiscountAmount = reader["TotalDiscountAmount"];
+                        ViewBag.GSTPercent = reader["GSTPercent"];
+                        ViewBag.GSTAmount = reader["GSTAmount"];
+                        ViewBag.FinalAmount = reader["FinalAmount"];
+                        ViewBag.IsFirstOrder = reader["IsFirstOrder"];
+                    }
+
+                }
+            }
 
             return View(cartItems);
         }
-
 
 
         [HttpPost]
@@ -1232,6 +1289,68 @@ namespace Mypro.Controllers
             ViewBag.CustomerCounts = cityData.Select(x => x.CustomerCount).ToList();
 
             return View();
+        }
+
+
+
+        // GET: /Account/Pricing
+        public IActionResult Pricing(int? categoryId)
+        {
+            var categories = _abc.Categories.ToList();
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "CategoryName", categoryId);
+
+
+            var images = _abc.CategoryImages.Include(c => c.Category).AsQueryable();
+
+            if (categoryId.HasValue)
+            {
+                images = images.Where(x => x.CategoryId == categoryId.Value);
+            }
+
+            return View(images.ToList());
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePrice(int imageId, decimal price)
+        {
+            var image = await _abc.CategoryImages.FindAsync(imageId);
+            if (image != null)
+            {
+                image.Price = price;
+                await _abc.SaveChangesAsync();
+            }
+            return RedirectToAction("Pricing");
+        }
+
+        // List all orders
+        public IActionResult Order()
+        {
+            var orders = _abc.Orders.Include(o => o.OrderItems).ToList();
+
+            return View(orders);
+        }
+
+        // Show order details
+        public IActionResult orderdetails(int id)
+        {
+            var order = _abc.Orders.FirstOrDefault(o => o.Id == id);
+            if (order == null) return NotFound();
+
+            return View(order);
+        }
+
+        [HttpPost]
+        public IActionResult ToggleAvailability(int id, bool isAvailable)
+        {
+            var order = _abc.Orders.FirstOrDefault(o => o.Id == id);
+            if (order == null) return NotFound();
+
+            order.IsAvailable = isAvailable;
+            _abc.SaveChanges();
+
+            string status = isAvailable ? "Available" : "Not Available";
+            return Json(new { success = true, status });
         }
 
 

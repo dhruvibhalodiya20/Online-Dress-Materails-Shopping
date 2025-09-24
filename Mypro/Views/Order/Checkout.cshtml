@@ -3,14 +3,16 @@
     ViewData["Title"] = "Checkout";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    decimal subtotal = ViewBag.SubTotal ?? 0m;
-    decimal orderDiscPercent = ViewBag.OrderDiscountPercent ?? 0m;
-    decimal dateDiscPercent = ViewBag.DateDiscountPercent ?? 0m;
-    decimal totalDiscountPercent = ViewBag.TotalDiscountPercent ?? 0m;
-    decimal totalDiscountAmount = ViewBag.TotalDiscountAmount ?? 0m;
-    decimal gstPercent = ViewBag.GSTPercent ?? 2m;
-    decimal gstAmount = ViewBag.GSTAmount ?? 0m;
-    decimal finalAmount = ViewBag.FinalAmount ?? 0m;
+    decimal subtotal = Convert.ToDecimal(ViewBag.SubTotal ?? 0m);
+    decimal orderDiscPercent = Convert.ToDecimal(ViewBag.OrderDiscountPercent ?? 0m);
+    decimal dateDiscPercent = Convert.ToDecimal(ViewBag.DateDiscountPercent ?? 0m);
+    decimal totalDiscountAmount = Convert.ToDecimal(ViewBag.TotalDiscountAmount ?? 0m);
+    decimal gstPercent = Convert.ToDecimal(ViewBag.GSTPercent ?? 2m);
+    decimal gstAmount = Convert.ToDecimal(ViewBag.GSTAmount ?? 0m);
+    decimal finalAmount = Convert.ToDecimal(ViewBag.FinalAmount ?? 0m);
+
+    decimal orderDiscountAmount = Math.Round(subtotal * orderDiscPercent / 100m, 2);
+    decimal dateDiscountAmount = Math.Round(subtotal * dateDiscPercent / 100m, 2);
 }
 
 <div class="checkout-container container my-1">
@@ -102,40 +104,54 @@
             </div>
 
             <!-- Order Summary -->
-            <div class="col-lg-5">
-                <div class="card shadow-lg p-4 rounded-4 ">
-                    <h4 class="fw-bold mb-3">Order Summary</h4>
-                    @foreach (var item in Model)
-                    {
-                        <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
-                            <span>@item.Image.Category.CategoryName </span>
-                            <span>₹@item.Price</span>
-                        </div>
-                    }
+        <div class="col-lg-5">
+            <div class="card shadow-lg p-4 rounded-4 ">
+                <h4 class="fw-bold mb-3">Order Summary</h4>
 
-                    <div class="d-flex justify-content-between mt-3">
-                        <span>Total MRP:</span>
-                        <span>₹@subtotal</span>
+                @foreach (var item in Model)
+                {
+                    <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                        <span>@item.Image.Category.CategoryName (x @item.Quantity)</span>
+                        <span>₹@(item.Price* item.Quantity)</span>
                     </div>
-                    <div class="d-flex justify-content-between text-danger">
-                        <span>Order Discount (@orderDiscPercent%):</span>
-                        <span>-₹@(Math.Round(subtotal * orderDiscPercent / 100m, 2))</span>
-                    </div>
-                    <div class="d-flex justify-content-between text-danger">
-                        <span>Date Discount (@dateDiscPercent%):</span>
-                        <span>-₹@(Math.Round(subtotal * dateDiscPercent / 100m, 2))</span>
-                    </div>
-                    <div class="d-flex justify-content-between text-primary">
-                        <span>GST (@gstPercent%):</span>
-                        <span>₹@gstAmount</span>
-                    </div>
-                    <hr />
-                    <div class="d-flex justify-content-between fw-bold fs-5">
-                        <span>TOTAL AMOUNT:</span>
-                        <span>₹@finalAmount</span>
-                    </div>
+                }
+
+                <div class="d-flex justify-content-between mt-3">
+                    <span>Total MRP:</span>
+                    <span id="total-mrp">₹@subtotal</span>
+                </div>
+
+                <div class="d-flex justify-content-between text-danger">
+                    <span>Order Discount (@orderDiscPercent%):</span>
+                    <span id="order-discount-amount">-₹@orderDiscountAmount</span>
+                </div>
+
+                <div class="d-flex justify-content-between text-danger">
+                    <span>Date Discount (@dateDiscPercent%):</span>
+                    <span id="date-discount-amount">-₹@dateDiscountAmount</span>
+                </div>
+
+                <hr />
+                <div class="d-flex justify-content-between text-danger">
+                    <span>Total Discount:</span>
+                    <span id="total-discount-amount">-₹@totalDiscountAmount</span>
+                </div>
+
+                <div class="d-flex justify-content-between text-primary">
+                    <span>GST (@gstPercent%):</span>
+                    <span id="gst-amount">₹@gstAmount</span>
+                </div>
+
+                <hr />
+                <div class="d-flex justify-content-between fw-bold fs-5">
+                    <span>TOTAL AMOUNT:</span>
+                    <span id="total-amount">₹@finalAmount</span>
                 </div>
             </div>
+        </div>
+
+
+
         </div>
     
 

@@ -12,6 +12,8 @@ namespace Mypro.Models
 
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
-        public decimal TotalPrice { get; set; } // UnitPrice * Quantity
+        public decimal TotalPrice { get; set; } 
+
+        
     }
 }

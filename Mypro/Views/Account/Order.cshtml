@@ -1,0 +1,196 @@
+﻿@model IEnumerable<Mypro.Models.Order>
+@{
+    ViewBag.Title = "Customer Orders";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<br />
+<br />
+<a href="javascript:history.back()" class="btn btn-light mb-3" style="font-size:20px; font-weight:bold;">←</a>
+
+<style>
+    /* Card */
+    .order-card {
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: 0.3s;
+        border: 1px solid #ddd;
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+    }
+
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+    /* Header */
+    .order-header {
+        background: black;
+        color: #fff;
+        padding: 14px 20px;
+        font-weight: bold;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    /* Status Badge */
+    .status-badge {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-weight: bold;
+        font-size: 0.85rem;
+        color: #fff;
+        text-transform: uppercase;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        margin-bottom: 10px;
+    }
+
+    .badge-pending {
+        background-color: #6c757d;
+    }
+    /* Gray */
+    .badge-available {
+        background-color: #28a745;
+    }
+    /* Green */
+    .badge-not-available {
+        background-color: #dc3545;
+    }
+    /* Red */
+
+    /* Body */
+    .order-body {
+        padding: 16px;
+        background: #fff;
+    }
+
+    .info-row {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+        color: #000;
+    }
+
+        .info-row i {
+            color: #000;
+            margin-right: 6px;
+        }
+
+    /* Buttons */
+    .actions {
+        margin-top: 12px;
+    }
+
+    .btn-action {
+        border-radius: 25px;
+        font-weight: 500;
+        padding: 8px 18px;
+        margin-right: 6px;
+        transition: 0.2s;
+        border: 1px solid #000;
+        background: #fff;
+        color: #000;
+    }
+
+        .btn-action:hover {
+            background: #000;
+            color: #fff;
+        }
+</style>
+
+<div class="container my-1">
+    <div class="text-center mb-1">
+        <h2 class="fw-bold">📦 Customer Orders</h2>
+        <p class="text-muted">Track and update orders in a modern black & white style</p>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            string statusText;
+            string statusClass;
+
+            if (item.IsAvailable == true)
+            {
+                statusText = "Available";
+                statusClass = "badge-available";
+            }
+            else if (item.IsAvailable == false)
+            {
+                statusText = "Not Available";
+                statusClass = "badge-not-available";
+            }
+            else
+            {
+                statusText = "Pending";
+                statusClass = "badge-pending";
+            }
+
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card order-card" id="card-@item.Id">
+                    <!-- Header with Details -->
+                    <div class="order-header">
+                        Order #@item.Id - ₹@item.FinalAmount
+                        <a asp-action="OrderDetails" asp-route-id="@item.Id" class="btn btn-action btn-info">📖 Details</a>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="order-body">
+                        <!-- Status Badge moved below header -->
+                        <span id="status-@item.Id" class="status-badge @statusClass">@statusText</span>
+
+                        <div class="info-row"><i class="bi bi-person"></i> <strong>@item.FullName</strong></div>
+                        <div class="info-row"><i class="bi bi-envelope"></i> @item.Email</div>
+                        <div class="info-row"><i class="bi bi-telephone"></i> @item.Phone</div>
+                        <div class="info-row"><i class="bi bi-geo-alt"></i> @item.Address</div>
+                        <div class="info-row"><i class="bi bi-credit-card"></i> @item.PaymentMethod</div>
+
+                        <div class="actions">
+                            <button type="button" class="btn btn-action btn-success" onclick="setAvailability(@item.Id, true)">✅ Available</button>
+                            <button type="button" class="btn btn-action btn-danger" onclick="setAvailability(@item.Id, false)">❌ Not Available</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function setAvailability(id, isAvailable) {
+        fetch('/Account/ToggleAvailability', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `id=${id}&isAvailable=${isAvailable}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                let statusDiv = document.getElementById("status-" + id);
+
+                // Update text
+                statusDiv.textContent = data.status;
+
+                // Remove old classes and apply new
+                statusDiv.classList.remove("badge-pending", "badge-available", "badge-not-available");
+                if (data.status === "Available") statusDiv.classList.add("badge-available");
+                else if (data.status === "Not Available") statusDiv.classList.add("badge-not-available");
+                else statusDiv.classList.add("badge-pending");
+            } else {
+                alert("❌ Failed to update status");
+            }
+        })
+        .catch(err => {
+            console.error("Error:", err);
+            alert("⚠️ Something went wrong!");
+        });
+    }
+</script>

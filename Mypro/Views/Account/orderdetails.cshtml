@@ -1,0 +1,94 @@
+﻿@model Mypro.Models.Order
+@{
+    ViewBag.Title = "Customer Order";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    h2 {
+        color: black;
+    }
+
+    body.theme-dark h2 {
+        color: white !important;
+    }
+</style>
+<div class="container my-5">
+    <!-- Page Header -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">🛒 Order Details</h2>
+        <p class="text-muted">Order #<span class="fw-bold">@Model.Id</span> | @Model.OrderDate.ToString("dd MMM yyyy")</p>
+    </div>
+
+    <!-- Customer Info Card -->
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header bg-primary text-white fw-bold">
+            Customer Information
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <p><strong class="bi bi-person"> Name:</strong> @Model.FullName</p>
+                    <p><strong class="bi bi-envelope"> Email:</strong> @Model.Email</p>
+                    <p><strong class="bi bi-telephone"> Phone:</strong> @Model.Phone</p>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <p><strong class="bi bi-geo-alt"> Address:</strong> @Model.Address</p>   
+                    <p><strong class="bi bi-credit-card"> Payment Method:</strong> @Model.PaymentMethod</p>
+                    <p>
+                        <strong> Status:</strong>
+                        @if (Model.IsAvailable == true)
+                        {
+                            <span class="status-available">Available</span>
+                        }
+                        else if (Model.IsAvailable == false)
+                        {
+                            <span class="status-not-available">Not Available</span>
+                        }
+                        else
+                        {
+                            <span class="status-pending">Pending</span>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Info Card -->
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header bg-success text-white fw-bold">
+            Payment & Amount
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-3 mb-2">
+                    <p><strong>Subtotal</strong></p>
+                    <p>₹@Model.SubTotal</p>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <p><strong>Order Discount</strong></p>
+                    <p>₹@Model.OrderDiscountAmount</p>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <p><strong>Date Discount</strong></p>
+                    <p>₹@Model.DateDiscountAmount</p>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <p><strong>GST (@Model.GSTPercent%)</strong></p>
+                    <p>₹@Model.GSTAmount</p>
+                </div>
+            </div>
+            <hr />
+            <div class="text-end">
+                <h4 class="fw-bold">Final Amount: ₹@Model.FinalAmount</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Button -->
+    <div class="text-center">
+        <a asp-action="Order" class="btn btn-secondary btn-lg">
+            ← Back to Orders
+        </a>
+    </div>
+</div>

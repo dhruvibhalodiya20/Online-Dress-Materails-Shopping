@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Mypro.Models;
+using Mypro.Services;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<OrderCalculationService>();
+
 
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

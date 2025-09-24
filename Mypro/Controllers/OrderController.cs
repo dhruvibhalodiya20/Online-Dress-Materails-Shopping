@@ -3,6 +3,9 @@ using Mypro.Models;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.Data.SqlClient;
+using System.Data;
+
 
 namespace Mypro.Controllers
 {
@@ -54,7 +57,7 @@ namespace Mypro.Controllers
 
             decimal subtotal = cartFromDb.Sum(i => i.Price * i.Quantity);
             decimal totalDiscountAmount = Math.Round(subtotal * totalDiscountPercent / 100m, 2);
-            decimal gstPercent = 2m; // as you requested earlier
+            decimal gstPercent = 2m; 
             decimal gstAmount = Math.Round((subtotal - totalDiscountAmount) * gstPercent / 100m, 2);
             decimal finalAmount = Math.Round(subtotal - totalDiscountAmount + gstAmount, 2);
 
@@ -68,10 +71,11 @@ namespace Mypro.Controllers
             ViewBag.FinalAmount = finalAmount;
             ViewBag.IsFirstOrder = isFirstOrder;
 
-            return View(cartFromDb); // Renders Checkout view (billing form + order summary)
+            return View(cartFromDb); 
         }
 
         // Place order - saves order + order items, clears cart
+        [HttpPost]
         [HttpPost]
         public IActionResult PlaceOrder(string FullName, string Email, string Phone, string Address, string PaymentMethod)
         {
@@ -80,79 +84,44 @@ namespace Mypro.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.Email);
 
-            var cart = _abc.CartItems
-                .Include(c => c.Image)
-                .Where(c => c.UserId == userId)
-                .ToList();
-
-            if (cart == null || !cart.Any())
+            int newOrderId = 0;
+            using (var conn = new SqlConnection(_abc.Database.GetDbConnection().ConnectionString))
+            using (var cmd = new SqlCommand("sp_PlaceOrder", conn))
             {
-                TempData["Error"] = "Your cart is empty!";
-                return RedirectToAction("Cart", "Account");
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@UserId", userId ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@FullName", FullName ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Email", Email ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Phone", Phone ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Address", Address ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@PaymentMethod", PaymentMethod ?? (object)DBNull.Value);
+
+                var outParam = new SqlParameter("@NewOrderId", SqlDbType.Int) { Direction = ParameterDirection.Output };
+                cmd.Parameters.Add(outParam);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+
+                newOrderId = (outParam.Value != DBNull.Value) ? (int)outParam.Value : 0;
             }
 
-            // compute discounts same as Checkout
-            bool isFirstOrder = !_abc.Orders.Any(o => o.UserId == userId);
-            decimal orderDiscPercent = isFirstOrder ? 5m : 2m;
-            int day = DateTime.Now.Day;
-            decimal dateDiscPercent = day <= 10 ? 4m : day <= 20 ? 3m : 2m;
-            decimal totalDiscountPercent = orderDiscPercent + dateDiscPercent;
-
-            decimal subtotal = cart.Sum(i => i.Price * i.Quantity);
-            decimal totalDiscountAmount = Math.Round(subtotal * totalDiscountPercent / 100m, 2);
-            decimal gstPercent = 2m;
-            decimal gstAmount = Math.Round((subtotal - totalDiscountAmount) * gstPercent / 100m, 2);
-            decimal finalAmount = Math.Round(subtotal - totalDiscountAmount + gstAmount, 2);
-
-            // create Order
-            var order = new Order
+            if (newOrderId > 0)
             {
-                UserId = userId,
-                FullName = FullName,
-                Email = Email,
-                Phone = Phone,
-                Address = Address,
-                OrderDate = DateTime.UtcNow,
-                SubTotal = subtotal,
-                OrderDiscountPercent = orderDiscPercent,
-                DateDiscountPercent = dateDiscPercent,
-                TotalDiscountAmount = totalDiscountAmount,
-                GSTPercent = gstPercent,
-                GSTAmount = gstAmount,
-                FinalAmount = finalAmount,
-                PaymentMethod = PaymentMethod
-            };
-
-            _abc.Orders.Add(order);
-            _abc.SaveChanges(); // so order.Id is populated
-
-            // create OrderItems
-            foreach (var ci in cart)
-            {
-                var oi = new OrderItem
-                {
-                    OrderId = order.Id,
-                    ImageId = ci.ImageId,
-                    Quantity = ci.Quantity,
-                    UnitPrice = ci.Price,
-                    TotalPrice = Math.Round(ci.Price * ci.Quantity, 2)
-                };
-                _abc.OrderItems.Add(oi);
+                return RedirectToAction("OrderConfirmation", new { id = newOrderId });
             }
 
-            // remove items from cart
-            _abc.CartItems.RemoveRange(cart);
-            _abc.SaveChanges();
-
-            // redirect to order confirmation page (pass order id)
-            return RedirectToAction("OrderConfirmation", new { id = order.Id });
+            TempData["Error"] = "Could not place order. Please try again.";
+            return RedirectToAction("Cart", "Account");
         }
+
 
         public IActionResult OrderConfirmation(int id)
         {
             var order = _abc.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Image)
+                  .ThenInclude(img => img.Category)
                 .FirstOrDefault(o => o.Id == id);
 
             if (order == null) return NotFound();

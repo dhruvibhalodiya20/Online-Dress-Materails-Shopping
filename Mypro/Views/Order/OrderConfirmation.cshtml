@@ -2,112 +2,285 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<a href="javascript:history.back()"
-   style="
-       position: absolute;
 
-       display: inline-flex;
-       align-items: center;
-       justify-content: center;
-       width: 45px;
-       height: 45px;
-       border-radius: 50%;
-       background-color: lightcoral;
-       color: #000;
-       font-size: 22px;
-       font-weight: bold;
-       text-decoration: none;
-       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-       left: 7%;
-       transition: all 0.3s ease;
-       z-index: 100;
-   "
-   onmouseover="this.style.backgroundColor='#e0e0e0'; this.style.transform='scale(1.1)';"
-   onmouseout="this.style.backgroundColor='lightcoral'; this.style.transform='scale(1)';">
-    ←
-</a>
+<div class="container my-5 p-4 normal-bill-container">
 
-<div class="container my-5">
-    <!-- Order Confirmation Header -->
-    <div class="text-center mb-5">
-        <h2 class="fw-bold text-gradient">✅ Order Confirmed — #@Model.Id</h2>
-        <p class="text-muted">Placed on: @Model.OrderDate.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")</p>
+    <!-- Header -->
+    <div class="d-flex align-items-center mb-4 header-flex">
+        <div class="logo-container">
+            <img src="~/template/assets/img/mylogo.png" alt="Ajay Fashion Logo" class="logo-img" />
+        </div>
+        <div class="shop-details">
+            <h2 class="fw-bold text-primary mb-2" style="letter-spacing: 1px; margin-left: 250px;">
+                AJAY FASHION
+            </h2>
+
+            <p class="mb-0" style="margin-left: 100px;">2/25 Ajay Fashion, Gujarat Housing Board, Bombay Market, Umarwada, Surat</p>
+            <p class="mb-0" style="margin-left: 200px;"><strong>Mob:</strong> KiritBhai 9898248747  |  AjayBhai 9898308449</p>
+            <p class="mb-0" style="margin-left: 200px;"><strong>Hours:</strong> Mon-Sat: 9AM - 8PM, Sun: 9AM - 1PM</p>
+        </div>
     </div>
+
+    <hr class="header-line" />
 
     <!-- Customer Details -->
-    <div class="card shadow-lg rounded-4 mb-4 p-4">
-        <h4 class="fw-bold text-primary mb-3">Customer Details</h4>
-        <p><span class="fw-bold">Name:</span> @Model.FullName</p>
-        <p><span class="fw-bold">Email:</span> @Model.Email</p>
-        <p><span class="fw-bold">Phone:</span> @Model.Phone</p>
-        <p><span class="fw-bold">Address:</span> @Model.Address</p>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="customer-details-box p-3">
+                <h4 class="fw-bold mb-3">👤 Customer Details</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong>Bill No:</strong> @Model.Id</p>
+                        <p class="mb-1"><strong>Date:</strong> @Model.OrderDate.ToString("dd MMM yyyy")</p>
+                        <p class="mb-1"><strong>Name:</strong> @Model.FullName</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong>Address:</strong> @Model.Address</p>
+                        <p class="mb-1"><strong>Email:</strong> @Model.Email</p>
+                        <p class="mb-1"><strong>Phone:</strong> @Model.Phone</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Order Items -->
-    <div class="card shadow-lg rounded-4 mb-4 p-4">
-        <h4 class="fw-bold text-primary mb-3">Order Items</h4>
-        <ul class="list-group list-group-flush">
-            @foreach (var oi in Model.OrderItems)
-            {
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>@oi.Image?.Category?.CategoryName</span>
-                    <span>Qty: @oi.Quantity</span>
-                    <span class="fw-bold">₹@oi.TotalPrice</span>
-                </li>
-            }
-        </ul>
+    <!-- Order Items Table -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <table class="table table-bordered align-middle normal-table">
+                <thead class="table-head">
+                    <tr>
+                        <th>Image</th>
+                        <th>Category / Product</th>
+                        <th>UnitPrice</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var oi in Model.OrderItems)
+                    {
+                        <tr>
+                            <td><img src="@Url.Content(oi.Image?.ImagePath ?? "/images/default.png")" alt="@oi.Image?.Category?.CategoryName ?? " Product"" class="product-img" /></td>
+                            <td class="text-start">
+                                <strong>@oi.Image?.Category?.CategoryName</strong><br />
+                                @oi.Image?.Description<br />
+                                <em>Qty: @oi.Quantity</em>
+                            </td>
+                            <td>₹@oi.UnitPrice</td>
+                            <td>₹@oi.TotalPrice</td>
+                        </tr>
+                    }
+                    <tr class="table-total fw-bold">
+                        <td colspan="3" class="text-end">TOTAL</td>
+                        <td>₹@Model.FinalAmount</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Order Summary -->
-    <div class="card shadow-lg rounded-4 p-4" style="background: #334155; color: #f8fafc;">
-        <h4 class="fw-bold text-warning mb-3">Order Summary</h4>
+    <div class="card order-summary p-4 mb-4">
+        <h5 class="fw-bold mb-3">💰 Order Summary</h5>
         <div class="d-flex justify-content-between mb-2">
             <span>Subtotal:</span>
             <span>₹@Model.SubTotal</span>
         </div>
-        <div class="d-flex justify-content-between mb-2 text-success">
+        <div class="d-flex justify-content-between mb-2 text-danger">
             <span>Order Discount (@Model.OrderDiscountPercent%):</span>
-            <span>-₹@Model.TotalDiscountAmount </span>
+            <span>- ₹@Math.Abs(Model.OrderDiscountAmount)</span>
         </div>
-        <div class="d-flex justify-content-between mb-2 text-success">
+        <div class="d-flex justify-content-between mb-2 text-danger">
             <span>Date Discount (@Model.DateDiscountPercent%):</span>
-            <span>-₹@Model.TotalDiscountAmount </span>
+            <span>- ₹@Math.Abs(Model.DateDiscountAmount)</span>
         </div>
         <div class="d-flex justify-content-between mb-2 text-info">
             <span>GST (@Model.GSTPercent%):</span>
-            <span>₹@Model.GSTAmount</span>
+            <span>+ ₹@Model.GSTAmount</span>
         </div>
-        <hr class="border-light">
+        <hr />
         <div class="d-flex justify-content-between fw-bold fs-4">
             <span>Total Paid:</span>
-            <span>₹@Model.FinalAmount</span>
+            <span class="text-success">₹@Model.FinalAmount</span>
         </div>
     </div>
+
+    <!-- Terms -->
+    <div class="row mb-4">
+        <div class="col-12 terms-box p-3">
+            <strong>NOTES :</strong><br />
+            1. No item will be returned.<br />
+            2. The price of the item will be fixed.
+            3. The damaged materails will be replaced within 4 days.
+            4. No warranty will be provided on highly fashionable clothes.
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-end">
+          <p class="fw-bold mb-0">AJAY FASHION</p>
+            <p class="mb-0">Authorized Signature</p>
+        </div>
+    </div>
+
+    <!-- Styles -->
+    <style>
+        /* Container */
+        .normal-bill-container {
+            max-width: 1050px;
+            min-height: 297mm;
+            background:#fff;
+            border: 3px solid #222;
+            border-radius: 25px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+            padding: 25px;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif; 
+            color: #222;
+        }
+
+        /* Header */
+        .d-flex.header-flex {
+            align-items: center;
+            gap: 30px; 
+        }
+
+        .logo-container {
+            flex-shrink: 0;
+        }
+
+        .logo-img {
+            max-height: 75px;
+            width: auto;
+            display: block;
+            margin-left: 29px !important;
+            padding-left: 0 !important;
+        }
+
+        .shop-details {
+            flex-grow: 1;
+        }
+
+        .shop-title {
+            color: #0d6efd; 
+            font-size: 1.85rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .header-line {
+            border-top: 2px solid #222;
+            margin: 10px 0 20px 0;
+        }
+
+        /* Customer Details */
+        .customer-details-box {
+            background: #fff7e6; /* soft warm background */
+            border: 2px solid #ffa500; /* attractive border */
+            border-radius: 12px;
+            color: #0a2540;
+            padding: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+            .customer-details-box h4 {
+                color: #ff5722; /* dynamic heading color */
+                font-weight: 700;
+            }
+
+        /* Table */
+        .table {
+            border: 2px solid #222;
+            font-size: 0.95rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+            .table th, .table td {
+                border: 1px solid #222;
+                vertical-align: middle;
+                text-align: center;
+                padding: 0.65rem;
+            }
+
+        .table-head {
+            background-color: #ff9800; /* dynamic header color */
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .table-total {
+            background-color: #c8e6c9; /* soft green for total row */
+            font-weight: 700;
+        }
+
+        .product-img {
+            width: 70px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            border-left: 5px solid #0d6efd; 
+            background-color: #f0f8ff; 
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            font-size: 1rem;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+            color: #222;
+        }
+
+            .order-summary h5, .order-summary h6 {
+                color: #0d6efd; /* matching heading color */
+                font-weight: 700;
+            }
+
+            .order-summary span {
+                font-weight: 500;
+            }
+
+        /* Terms */
+        .terms-box {
+            background-color: #e3f2fd;
+            border: 1px solid #222;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            padding: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Text Colors */
+        .text-success {
+            color: #198754 !important;
+            font-weight: 600;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+            font-weight: 600;
+        }
+
+        .text-info {
+            color: #0dcaf0 !important;
+            font-weight: 600;
+        }
+
+        /* Optional: Rounded table headers */
+        .table-head th:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        .table-head th:last-child {
+            border-top-right-radius: 8px;
+        }
+    </style>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+
 </div>
-
-<style>
-   
-    .text-gradient {
-        background: linear-gradient(45deg, #ff416c, #ff4b2b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-   
-    body.theme-dark .card {
-        background: #1e293b !important;
-        color: #f8fafc !important;
-    }
-
-    .card h4 {
-        font-family: 'Playfair Display', serif;
-    }
-
-    ul.list-group li {
-        font-size: 1rem;
-    }
-
-    .fw-bold {
-        font-weight: 600 !important;
-    }
-</style>
