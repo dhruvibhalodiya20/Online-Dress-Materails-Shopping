@@ -26,204 +26,8 @@
 
     <!-- Main CSS File -->
     <link href="~/template/assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 
-    <style>
-        /* === Header Styles === */
-        .header {
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 18px 0; /* Removed extra vertical padding */
-            z-index: 999;
-            width: 100%;
-            overflow: hidden; 
-            position: relative;
-        }
-
-            .header .container {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                flex-wrap: nowrap;
-                gap: 18px; /* Slightly reduced */
-                padding: 0px 25px; /* Compact container padding */
-            }
-
-      
-
-        .header-user-section img,
-.header-user-section .initials {
-    height: 32px;
-    width: 32px;
-    font-size: 14px; /* For initials */
-    line-height: 32px;
-}
-
-        /* === Logo === */
-        .logo {
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-            white-space: nowrap;
-        }
-
-        .logo-img {
-            height: 40px;
-            margin-right: 8px;
-            transform: scale(1.6);
-            margin-left: -40%; /* Shift 20% to the left */
-            transition: transform 0.3s ease;
-        }
-
-        .logo-text {
-            font-family: 'Brush Script MT', cursive;
-            font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #f7941d, #ec008c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* === Navigation === */
-        /* === Compact Navigation Menu === */
-        .navmenu {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-            justify-content: center;
-            padding: 0;
-            margin: 0;
-            height: auto;
-            flex-shrink: 1;
-            white-space: nowrap;
-           
-        }
-
-            .navmenu ul {
-                display: flex;
-                align-items: center;
-                gap: 10px; /* Less space between menu items */
-                margin: 0;
-                padding: 0;
-                list-style: none;
-            }
-
-                .navmenu ul li {
-                    margin: 0;
-                    padding: 0;
-                }
-
-                    .navmenu ul li a {
-                        font-weight: 600;
-                        font-size: 0.95rem;
-                        padding: 4px 8px;
-                        line-height: 1.2;
-                        text-decoration: none;
-                        background: linear-gradient(45deg, #f7941d, #ec008c);
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
-                        display: inline-block;
-                        transition: color 0.2s ease-in-out;
-                    }
-
-                        .navmenu ul li a:hover {
-                            background: linear-gradient(45deg, #ec008c, #f7941d);
-                            -webkit-background-clip: text;
-                            -webkit-text-fill-color: transparent;
-                        }
-
-        /* === User Profile Section === */
-        .header-user-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            position: absolute; /* Fix its position */
-            top: 50%; /* Vertically center */
-            right: 20px; /* 20px from right corner */
-            transform: translateY(-50%); /* Perfect vertical alignment */
-        }
-            .header-user-section img,
-            .header-user-section .initials {
-                width: 35px;
-                height: 35px;
-                object-fit: cover;
-                border-radius: 50%;
-                flex-shrink: 0;
-            }
-
-            .header-user-section .initials {
-                background-color: #007bff;
-                color: white;
-                font-weight: bold;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .header-user-section span {
-                font-weight: 500;
-            }
-
-            .header-user-section .btn {
-                font-size: 0.85rem;
-                padding: 5px 10px;
-                white-space: nowrap;
-            }
-
-            .header-user-section form {
-                margin-bottom: 0;
-            }
-
-            .header-user-section a i {
-                font-size: 1.3rem;
-                color: #333;
-                transition: color 0.2s ease;
-            }
-
-                .header-user-section a i:hover {
-                    color: #f7941d;
-                }
-
-        .menu-note {
-            margin: 15px;
-            padding: 10px;
-            background-color: #f8f8f8;
-            border-left: 4px solid #c0392b;
-            font-size: 14px;
-            color: #333;
-            border-radius: 6px;
-        }
-
-        .side-menu {
-            width: 250px; 
-            max-height: 750px; 
-            overflow-y: auto; 
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-
-        .menu-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-            .menu-list li {
-                margin: 5px 0;
-            }
-
-            .menu-list a {
-                text-decoration: none;
-                color: #333;
-            }
-
-                .menu-list a:hover {
-                    color: #007bff;
-                }
-
-    </style>
 
 </head>
 
@@ -232,7 +36,7 @@
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container position-relative d-flex align-items-center justify-content-between">
 
-            <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+            <a href="" class="logo d-flex align-items-center me-auto me-xl-0">
                 <!-- Logo Image -->
                 <img src="~/template/assets/img/mylogo.png" alt="FashionRack Logo" class="logo-img">
 
@@ -265,7 +69,9 @@
                 }
             </style>
 
-
+            <div class="right-section">
+            <!-- Hamburger -->
+         
 
             <nav id="navmenu" class="navmenu">
                 <ul>
@@ -279,6 +85,7 @@
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
+            </div>
 
             <style>
                 .navmenu ul {
@@ -312,6 +119,7 @@
                                 -webkit-background-clip: text;
                                 -webkit-text-fill-color: transparent;
                             }
+
             </style>
 
 
@@ -401,7 +209,7 @@
                 <a class="btn-getstarted" asp-controller="Account" asp-action="Login">Login / Register</a>
             }
 
-
+            <div class="hamburger"><i class="bi bi-list"></i></div>
 
         </div>
     </header>
@@ -472,6 +280,34 @@
 
     <!-- Main JS File -->
     <script src="~/template/assets/js/main.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const hamburger = document.querySelector(".hamburger");
+            const navmenu = document.querySelector(".navmenu");
+
+            // Toggle menu on hamburger click
+            hamburger.addEventListener("click", function (e) {
+                e.stopPropagation(); // Prevent the click from propagating to document
+                navmenu.classList.toggle("active");
+            });
+
+            // Close menu if clicking outside
+            document.addEventListener("click", function (e) {
+                if (!navmenu.contains(e.target) && !hamburger.contains(e.target)) {
+                    navmenu.classList.remove("active");
+                }
+            });
+
+            // Optional: close menu when a nav link is clicked (for mobile)
+            navmenu.querySelectorAll("a").forEach(link => {
+                link.addEventListener("click", () => {
+                    navmenu.classList.remove("active");
+                });
+            });
+        });
+    </script>
+
     @RenderSection("Scripts", required: false)
 </body>
 

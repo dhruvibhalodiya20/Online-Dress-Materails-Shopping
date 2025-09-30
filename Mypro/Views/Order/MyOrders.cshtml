@@ -68,7 +68,11 @@
 
                             <span class="ms-auto text-success">₹@order.FinalAmount</span>
 
+                              
+
                         </button>
+
+                           
 
                     </h2>
 
@@ -115,6 +119,32 @@
                                 <h6>GST: ₹@order.GSTAmount</h6>
                                 <h5 class="fw-bold text-success mt-2">Final Amount: ₹@order.FinalAmount</h5>
                             </div>
+                                <div class="mt-3 p-3 border rounded text-center"
+                                     style="background-color:@(
+                                     order.IsAvailable == true ? "#d1fae5" :
+                                     order.IsAvailable == false ? "#fee2e2" : "#fef9c3"
+          ); ">
+
+                            @if (order.IsAvailable == true)
+                                    {
+                                        <span class="fw-bold text-success">
+                                            ✅ This order is available and will arrive within <b>7 days</b>.
+                                        </span>
+                                    }
+                                    else if (order.IsAvailable == false)
+                                    {
+                                        <span class="fw-bold text-danger">
+                                            ❌ This order is not available at the moment. Expected arrival within <b>15 days</b>.
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="fw-bold text-warning">
+                                            ⏳ This order is pending confirmation. Please check back soon.
+                                        </span>
+                                    }
+                                </div>
+
 
                                 @if (!order.IsCancelled)
                                 {

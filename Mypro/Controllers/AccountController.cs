@@ -672,8 +672,7 @@ namespace Mypro.Controllers
                 return RedirectToAction("Login", "Account");
 
             var userId = User.FindFirstValue(ClaimTypes.Email);
-
-            // Get cart items (for listing in UI) via EF (you can also use proc's first resultset if you prefer)
+ 
             var cartItems = _abc.CartItems
                 .Include(c => c.Image)
                 .ThenInclude(i => i.Category)
@@ -1353,6 +1352,53 @@ namespace Mypro.Controllers
             return Json(new { success = true, status });
         }
 
+
+        //public IActionResult Query()
+        //{
+        //    var queries = _abc.ContactMessages
+        //                      .OrderByDescending(q => q.CreatedAt)
+        //                      .Select(q => new ContactMessage
+        //                      {
+        //                          Id = q.Id,
+        //                          Name = q.Name,
+        //                          Email = q.Email,
+        //                          Subject = q.Subject,
+        //                          Message = q.Message,
+        //                          CreatedAt = q.CreatedAt,
+        //                          Reply = q.Reply ?? ""   
+        //                      })
+        //                      .ToList();
+
+        //    return View(queries);
+        //}
+
+
+
+   
+        public IActionResult Query()
+        {
+            var queries = _abc.ContactMessages
+                              .FromSqlRaw("EXEC sp_GetAllContactMessages")
+                              .AsEnumerable()
+                              .ToList();
+
+            return View(queries);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reply(int id, string reply)
+        {
+            var query = await _abc.ContactMessages.FindAsync(id);
+            if (query == null)
+                return Json(new { success = false, message = "Query not found." });
+
+            query.Reply = reply;
+            query.ReplyAt = DateTime.Now;
+
+            await _abc.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Reply sent successfully.", reply = reply });
+        }
 
 
     }

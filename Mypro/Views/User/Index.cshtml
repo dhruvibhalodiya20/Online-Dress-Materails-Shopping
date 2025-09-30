@@ -1,4 +1,5 @@
-﻿
+﻿@model List<Mypro.Models.ContactMessage>
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/head_foot.cshtml";
@@ -1191,9 +1192,9 @@
                     <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g14.jpg"><img src="~/template/assets/img/gallery/g14.jpg" class="img-fluid" alt=""></a></div>
                     <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g9.jpg"><img src="~/template/assets/img/gallery/g9.jpg" class="img-fluid" alt=""></a></div>
                     <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g15.jpg"><img src="~/template/assets/img/gallery/g15.jpg" class="img-fluid" alt=""></a></div>
-                     <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g16.jpg"><img src="~/template/assets/img/gallery/g16.jpg" class="img-fluid" alt=""></a></div>
-                      <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g17.jpg"><img src="~/template/assets/img/gallery/g17.jpg" class="img-fluid" alt=""></a></div>
-                       <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g18.jpg"><img src="~/template/assets/img/gallery/g18.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g16.jpg"><img src="~/template/assets/img/gallery/g16.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g17.jpg"><img src="~/template/assets/img/gallery/g17.jpg" class="img-fluid" alt=""></a></div>
+                    <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g18.jpg"><img src="~/template/assets/img/gallery/g18.jpg" class="img-fluid" alt=""></a></div>
                     <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g19.jpg"><img src="~/template/assets/img/gallery/g19.jpg" class="img-fluid" alt=""></a></div>
                     <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g20.jpg"><img src="~/template/assets/img/gallery/g20.jpg" class="img-fluid" alt=""></a></div>
                     <div class="swiper-slide"><a class="glightbox" data-gallery="images-gallery" href="~/template/assets/img/gallery/g21.jpg"><img src="~/template/assets/img/gallery/g21.jpg" class="img-fluid" alt=""></a></div>
@@ -1276,37 +1277,198 @@
 
             </div>
 
-            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="600">
-                <div class="row gy-4">
+            <div class="row gy-4 mt-4">
+                <div class="col-md-12">
+                    <div id="formMessage" class="alert text-center d-none"></div>
 
-                    <div class="col-md-6">
-                        <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
-                    </div>
+                    <form id="contactForm" asp-action="Contact" asp-controller="User" method="post" class="php-email-form border-dark-form p-4 rounded">
+                        @Html.AntiForgeryToken()
 
-                    <div class="col-md-6 ">
-                        <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
-                    </div>
+                        <div class="row gy-4">
+                            <div class="col-md-6">
+                                <input type="text" name="Name" class="form-control black-border" placeholder="Your Name" required="">
+                            </div>
 
-                    <div class="col-md-12">
-                        <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
-                    </div>
+                            <div class="col-md-6">
+                                <input type="email" name="Email" class="form-control black-border" placeholder="Your Email" required="">
+                            </div>
 
-                    <div class="col-md-12">
-                        <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-                    </div>
+                            <div class="col-md-12">
+                                <input type="text" name="Subject" class="form-control black-border" placeholder="Subject" required="">
+                            </div>
 
-                    <div class="col-md-12 text-center">
-                        <div class="loading">Loading</div>
-                        <div class="error-message"></div>
-                        <div class="sent-message">Your message has been sent. Thank you!</div>
+                            <div class="col-md-12">
+                                <textarea name="Message" class="form-control black-border" rows="6" placeholder="Message" required=""></textarea>
+                            </div>
 
-                        <button type="submit">Send Message</button>
-                    </div>
-
+                            <div class="col-md-12 text-center">
+                                <button type="submit">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form><!-- End Contact Form -->
+            </div>
+
+            <!-- All Queries Section -->
+            <hr class="my-4">
+            <h3 class="fw-bold mb-3">📩 All Queries</h3>
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="accordion" id="queriesAccordion">
+                    @foreach (var q in Model)
+                    {
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-@q.Id">
+                                <button class="accordion-button collapsed fw-bold"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapse-@q.Id"
+                                        aria-expanded="false"
+                                        aria-controls="collapse-@q.Id">
+                                    ✉️ @q.Subject — <span class="text-primary">@q.Name</span>
+                                    <span class="ms-auto text-muted">
+                                        @q.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                                    </span>
+                                </button>
+                            </h2>
+                            <div id="collapse-@q.Id" class="accordion-collapse collapse" aria-labelledby="heading-@q.Id">
+                                <div class="accordion-body">
+                                    <p><strong>Message:</strong> @q.Message</p>
+
+                                    <div class="reply-section mt-3">
+                                        @if (!string.IsNullOrEmpty(q.Reply))
+                                        {
+                                            <div class="current-reply">
+                                                <strong>Reply:</strong> @q.Reply
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="current-reply text-muted">
+                                                ⏳ Waiting for your reply!
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No queries found.</p>
+            }
 
         </div>
+
+
+        </div>
+
+
+        <style>
+                .accordion-button {
+                    font-weight: 600;
+                    color: #000;
+                }
+
+                body.theme-dark .accordion-button {
+                    color: #fff;
+                }
+
+                .accordion-body {
+                    background-color: #f8f9fa;
+                }
+
+                body.theme-dark .accordion-body {
+                    background-color: #333;
+                    color: #eee;
+                }
+
+                .reply-section .current-reply {
+                    background: #f1f3f5;
+                    padding: 8px;
+                    border-radius: 5px;
+                }
+
+                body.theme-dark .reply-section .current-reply {
+                    background: #444;
+                    color: #eee;
+                }
+
+                
+                
+                
+                
+                
+                
+                .border-dark-form {
+                    border: 3px solid #000; 
+                    background-color: #fff; 
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+                }
+
+               
+                .black-border {
+                    border: 1px solid grey !important; 
+                    border-radius: 4px;
+                }
+
+                    .black-border:focus {
+                        border-color: #000 !important; 
+                        box-shadow: none !important; 
+                    }
+
+            </style>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(function () {
+                    $("#contactForm").submit(function (e) {
+                        e.preventDefault(); 
+
+                        var form = $(this);
+                        var formData = form.serialize();
+
+                        $.ajax({
+                            type: "POST",
+                            url: form.attr("action"),
+                            data: formData,
+                            success: function (response) {
+                                var msgDiv = $("#formMessage");
+
+                                if (response.success) {
+                                    msgDiv
+                                        .removeClass("d-none alert-danger")
+                                        .addClass("alert-success")
+                                        .text(response.message)
+                                        .fadeIn();
+
+                                    form[0].reset();
+
+                                    setTimeout(function () {
+                                        msgDiv.fadeOut();
+                                    }, 3000); 
+                                } else {
+                                    msgDiv
+                                        .removeClass("d-none alert-success")
+                                        .addClass("alert-danger")
+                                        .text(response.message)
+                                        .fadeIn();
+                                }
+                            },
+                            error: function () {
+                                alert("Something went wrong. Please try again.");
+                            }
+                        });
+                    });
+                });
+            </script>
+
+
+            <!-- End Contact Form -->
+
+       
 
     </section><!-- /Contact Section -->
 

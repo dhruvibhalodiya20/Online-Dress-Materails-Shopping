@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using iText.Commons.Actions.Contexts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mypro.Models;
 using System.Security.Claims;
@@ -20,7 +21,9 @@ namespace Mypro.Controllers
             {
                 ViewBag.UserName = User.Identity.Name;
             }
-            return View();
+            var queries = abc.ContactMessages.ToList(); 
+            return View(queries);
+           
         }
 
         public IActionResult EditProfile()
@@ -81,5 +84,27 @@ namespace Mypro.Controllers
             TempData["SucessMessage"] = "Profile updated succesfully !";
             return RedirectToAction("Index");
         }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contact(ContactMessage model)
+        {
+            if (ModelState.IsValid)
+            {
+                abc.ContactMessages.Add(model);
+                await abc.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Your message has been sent successfully!" });
+            }
+
+            return Json(new { success = false, message = "Please fill all required fields correctly." });
+        }
+
+
     }
 }
