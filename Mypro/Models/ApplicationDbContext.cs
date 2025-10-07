@@ -19,6 +19,8 @@ namespace Mypro.Models
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ContactMessage> ContactMessages { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
     }
 }

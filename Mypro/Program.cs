@@ -78,6 +78,9 @@ app.UseSession(); // Session before Authentication
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapControllers();
+app.MapDefaultControllerRoute();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=User}/{action=Index}/{id?}");

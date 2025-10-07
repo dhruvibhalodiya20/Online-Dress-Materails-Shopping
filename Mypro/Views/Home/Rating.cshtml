@@ -1,0 +1,495 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<section id="reviews" class="reviews-section" aria-labelledby="reviews-title">
+    <div class="reviews-header">
+        <h2 id="reviews-title">Customer reviews</h2>
+        <div class="rating-summary" aria-live="polite">
+            <div class="stars" data-average="4.7" data-max="5" aria-label="Average rating 4.7 out of 5">
+                <span class="stars-bg">★★★★★</span>
+                <span class="stars-fill" style="width: 94%;">★★★★★</span>
+            </div>
+            <div class="rating-meta">
+                <span class="rating-value">4.7</span>
+                <span class="rating-slash">/</span>
+                <span class="rating-max">5</span>
+                <span class="rating-count">(1,532 ratings)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Distribution bars -->
+    <div class="rating-breakdown" aria-label="Rating distribution">
+        <div class="bar-row" data-stars="5">
+            <span class="label">5</span>
+            <span class="bar"><span class="fill" style="width: 68%;"></span></span>
+            <span class="count">1,042</span>
+        </div>
+        <div class="bar-row" data-stars="4">
+            <span class="label">4</span>
+            <span class="bar"><span class="fill" style="width: 20%;"></span></span>
+            <span class="count">306</span>
+        </div>
+        <div class="bar-row" data-stars="3">
+            <span class="label">3</span>
+            <span class="bar"><span class="fill" style="width: 7%;"></span></span>
+            <span class="count">112</span>
+        </div>
+        <div class="bar-row" data-stars="2">
+            <span class="label">2</span>
+            <span class="bar"><span class="fill" style="width: 3%;"></span></span>
+            <span class="count">46</span>
+        </div>
+        <div class="bar-row" data-stars="1">
+            <span class="label">1</span>
+            <span class="bar"><span class="fill" style="width: 2%;"></span></span>
+            <span class="count">26</span>
+        </div>
+    </div>
+
+    <!-- Reviews list -->
+    <ul id="reviewsList" class="reviews-list">
+        <!-- Example review item -->
+        <li class="review">
+            <div class="review-top">
+                <div class="review-stars" aria-label="Rated 5 out of 5">★★★★★</div>
+                <div class="review-author">by Priya</div>
+                <div class="review-date">Sep 21, 2025</div>
+            </div>
+            <p class="review-text">Excellent quality fabric and fast delivery.</p>
+        </li>
+    </ul>
+
+    <!-- Load more -->
+    <button id="loadMoreReviews" class="btn-load" type="button" aria-label="Load more reviews">Load more</button>
+
+    <!-- Write a review -->
+    <form id="reviewForm" class="review-form" aria-label="Write a review">
+        <h3 class="form-title">Write a review</h3>
+        <div class="form-row">
+            <label class="form-label">Rating</label>
+            <div class="star-input" role="radiogroup" aria-label="Star rating">
+                <input type="radio" name="stars" id="rate5" value="5" aria-label="5 stars">
+                <label for="rate5">★</label>
+                <input type="radio" name="stars" id="rate4" value="4" aria-label="4 stars">
+                <label for="rate4">★</label>
+                <input type="radio" name="stars" id="rate3" value="3" aria-label="3 stars">
+                <label for="rate3">★</label>
+                <input type="radio" name="stars" id="rate2" value="2" aria-label="2 stars">
+                <label for="rate2">★</label>
+                <input type="radio" name="stars" id="rate1" value="1" aria-label="1 star">
+                <label for="rate1">★</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <label for="name" class="form-label">Name</label>
+            <input id="name" name="name" type="text" required placeholder="Full name">
+        </div>
+        <div class="form-row">
+            <label for="review" class="form-label">Review</label>
+            <textarea id="review" name="review" rows="4" required placeholder="Share experience..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Submit review</button>
+        <p id="formMsg" class="form-msg" role="status" aria-live="polite"></p>
+    </form>
+</section>
+
+<!-- Minimal styles -->
+<style>
+    /* ================== Reviews Section ================== */
+    .reviews-section {
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 30px;
+        background: #fff;
+        max-width: 900px;
+        margin: 40px auto;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Header */
+    .reviews-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+        .reviews-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+        }
+
+    /* Rating Summary */
+    .rating-summary {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .stars {
+        position: relative;
+        display: inline-block;
+        font-size: 30px;
+        line-height: 1;
+    }
+
+    .stars-bg {
+        color: #e5e7eb;
+    }
+
+    .stars-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #fbbf24;
+    }
+
+    .rating-meta {
+        color: #374151;
+        font-size: 14px;
+    }
+
+    /* Distribution Bars */
+    .rating-breakdown {
+        margin: 16px 0;
+    }
+
+    .bar-row {
+        display: grid;
+        grid-template-columns: 25px 1fr 60px;
+        align-items: center;
+        gap: 10px;
+        margin: 6px 0;
+    }
+
+    .bar {
+        height: 10px;
+        background: #dee1e5;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .fill {
+        height: 100%;
+        background: linear-gradient(90deg, #fbbf24, #f59e0b);
+        display: block;
+    }
+
+    /* Reviews List */
+    .reviews-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    .review {
+        border-top: 1px solid #e5e7eb;
+        padding: 14px 0;
+        transition: background 0.2s, transform 0.2s;
+        border-radius: 12px;
+    }
+
+        .review:hover {
+            background: #f9fafb;
+            transform: translateY(-2px);
+        }
+
+    .review-top {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 14px;
+        flex-wrap: wrap;
+        color: #6b7280;
+    }
+
+    .review-stars {
+        color: #fbbf24;
+        font-size: 32px;
+    }
+
+    .review-author {
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .review-date {
+        margin-left: auto;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .review-text {
+        margin-top: 6px;
+        color: #374151;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    /* Buttons */
+    .btn-load, .btn-submit {
+        background: #111827;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 16px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.2s;
+    }
+
+        .btn-load:hover, .btn-submit:hover {
+            background: #1f2937;
+        }
+
+    .btn-load {
+        margin-top: 12px;
+        display: block;
+    }
+
+    /* Form */
+    .review-form {
+        margin-top: 24px;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 20px;
+    }
+
+    .form-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .form-row {
+        margin: 12px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .form-label {
+        font-size: 14px;
+        color: #374151;
+    }
+
+    input[type="text"], textarea {
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 14px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: #f59e0b;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(251,191,36,0.3);
+        }
+
+    /* Star Input */
+    .star-input {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 6px;
+    }
+
+        .star-input input {
+            display: none;
+        }
+
+        .star-input label {
+            font-size: 40px;
+            color: #b0b5bb;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+            .star-input label:hover,
+            .star-input label:hover ~ label,
+            .star-input input:checked ~ label {
+                color: #fbbf24;
+            }
+
+    /* Form message */
+    .form-msg {
+        margin-top: 8px;
+        font-size: 14px;
+    }
+
+    /* Responsive */
+    media (max-width: 600px) {
+        .reviews-header
+
+    {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .review-date {
+        margin-left: 0;
+        width: 100%;
+        text-align: right;
+    }
+
+    .bar-row {
+        grid-template-columns: 20px 1fr 50px;
+    }
+
+    }
+</style>
+
+
+<!-- Accessibility + interactivity -->
+<script>
+    (async function(){
+        // Demo in-memory reviews; replace with API calls in production
+        const initial = [
+            { name: 'Pinal', stars: 5, text: 'Excellent quality fabric and fast delivery.', date: '2025-09-21' },
+            { name: 'Jenil', stars: 4, text: 'Colors as pictured, will buy again.', date: '2025-09-18' },
+            { name: 'Mahek', stars: 5, text: 'Soft cotton, perfect for summer.', date: '2025-09-10' },
+            { name: 'Jinal', stars: 3, text: 'Good but stitching could be better.', date: '2025-08-29' }
+        ];
+
+        const list = document.getElementById('reviewsList');
+        const loadBtn = document.getElementById('loadMoreReviews');
+        const form = document.getElementById('reviewForm');
+        const msg = document.getElementById('formMsg');
+
+        // Load reviews from database and prepend them to initial array
+        try {
+            const res = await fetch('/Home/GetReviews');
+            const dbReviews = await res.json();
+
+            dbReviews.forEach(r => {
+                initial.unshift({
+                    name: r.name,
+                    stars: r.stars,
+                    text: r.reviewText,
+                    date: new Date(r.createdAt).toISOString().slice(0, 10)
+                });
+            });
+        } catch (err) {
+            console.error('Failed to load reviews from DB', err);
+        }
+
+        // Render helpers
+        function starText(n){ return '★★★★★'.slice(0, n).padEnd(5, '☆'); }
+        function formatDate(d){
+            const dt = new Date(d);
+            return dt.toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric' });
+        }
+
+        // State
+        let reviews = initial.slice(0);
+        let page = 1;
+        const pageSize = 5;
+
+        function renderList(){
+            const start = 0;
+            const end = page * pageSize;
+            list.innerHTML = reviews.slice(start, end).map(r => `
+              <li class="review">
+                <div class="review-top">
+                  <div class="review-stars" aria-label="Rated ${r.stars} out of 5">${'★'.repeat(r.stars)}</div>
+                  <div class="review-author">by ${escapeHtml(r.name)}</div>
+                  <div class="review-date">${formatDate(r.date)}</div>
+                </div>
+                <p class="review-text">${escapeHtml(r.text)}</p>
+              </li>
+            `).join('');
+            loadBtn.style.display = end < reviews.length ? 'inline-block' : 'none';
+        }
+
+        function updateSummary(){
+            const avg = reviews.reduce((a, r) => a + r.stars, 0) / reviews.length || 0;
+            const ratingValue = document.querySelector('.rating-value');
+            const ratingCount = document.querySelector('.rating-count');
+            const fill = document.querySelector('.stars-fill');
+            ratingValue.textContent = avg.toFixed(1);
+            ratingCount.textContent = `(${reviews.length} ratings)`;
+            fill.style.width = `${(avg/5)*100}%`;
+        }
+
+        function updateDistribution(){
+            const counts = {1:0,2:0,3:0,4:0,5:0};
+            reviews.forEach(r => counts[r.stars]++);
+            const total = reviews.length || 1;
+            document.querySelectorAll('.bar-row').forEach(row => {
+              const s = Number(row.getAttribute('data-stars'));
+              const pct = Math.round((counts[s] / total) * 100);
+              row.querySelector('.fill').style.width = pct + '%';
+              row.querySelector('.count').textContent = counts[s];
+            });
+        }
+
+        function escapeHtml(str){
+            return String(str).replace(/[&<>"']/g, s => ({
+              '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'
+            }[s]));
+        }
+
+        // Events
+        loadBtn.addEventListener('click', () => { page++; renderList(); });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const stars = Number(formData.get('stars') || 0);
+            const name = (formData.get('name') || '').trim();
+            const text = (formData.get('review') || '').trim();
+            if(!stars || !name || !text){
+              msg.textContent = 'Please provide rating, name, and review.';
+              msg.style.color = '#b91c1c';
+              return;
+            }
+
+            try {
+                const res = await fetch('/Home/AddReview', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ Stars: stars, Name: name, ReviewText: text })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    msg.textContent = data.message;
+                    msg.style.color = '#065f46';
+
+                    // Add the new review to our array
+                    reviews.unshift({ stars, name, text, date: new Date().toISOString().slice(0, 10) });
+                    page = Math.ceil(reviews.length / pageSize);
+                    renderList();
+                    updateSummary();
+                    updateDistribution();
+
+                    form.reset();
+                } else {
+                    msg.textContent = data.message;
+                    msg.style.color = '#b91c1c';
+                }
+            } catch (err) {
+                msg.textContent = 'Server error, try again later.';
+                msg.style.color = '#b91c1c';
+            }
+        });
+
+        // Init
+        renderList();
+        updateSummary();
+        updateDistribution();
+    })();
+</script>
+
+

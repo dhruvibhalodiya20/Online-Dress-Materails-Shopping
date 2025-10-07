@@ -7,7 +7,645 @@
 
 
 <main class="main">
+    <!-- ============================================
+     SMART SEARCH BAR - PLACE AFTER HERO SECTION
+     ============================================ -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <section id="smart-search" class="smart-search-section">
+            <div class="container">
+                <div class="search-wrapper" data-aos="fade-up">
+                    <!-- Search Input Container -->
+                    <div class="search-container">
+                        <i class="bi bi-search search-icon"></i>
 
+                        <input type="text"
+                               id="smartSearchInput"
+                               class="smart-search-input"
+                               placeholder="Search for fabrics, categories, or collections..."
+                               autocomplete="off"
+                               aria-label="Search">
+
+                        <button class="clear-search"
+                                id="clearSearch"
+                                style="display: none;"
+                                aria-label="Clear search">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    </div>
+
+                    <!-- Autocomplete Suggestions Dropdown -->
+                    <div id="searchSuggestions" class="search-suggestions" style="display: none;">
+                        <div class="suggestions-header">
+                            <span class="suggestions-title">Quick Suggestions</span>
+                        </div>
+                        <ul id="suggestionsList" class="suggestions-list" role="listbox"></ul>
+                        <div class="no-results" id="noResults" style="display: none;">
+                            <i class="bi bi-search"></i>
+                            <p>No results found. Try different keywords.</p>
+                        </div>
+                    </div>
+                 
+                </div>
+            </div>
+        </section>
+
+        <style>
+            /* ===================================
+                       SMART SEARCH SECTION STYLES
+                       =================================== */
+
+            .smart-search-section {
+                padding: 40px 0;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                position: relative;
+                overflow: visible;
+                z-index: 1;
+            }
+
+                /* Decorative grid pattern */
+                .smart-search-section::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="80" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+                    opacity: 0.3;
+                    pointer-events: none;
+                }
+
+            .search-wrapper {
+                max-width: 700px;
+                margin: 0 auto;
+                position: relative;
+                z-index: 999;
+            }
+
+            /* Search input container */
+            .search-container {
+                position: relative;
+                display: flex;
+                align-items: center;
+                background: white;
+                border-radius: 50px;
+                padding: 8px 20px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+            }
+
+                .search-container:hover,
+                .search-container:focus-within {
+                    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+                    transform: translateY(-2px);
+                }
+
+            .search-icon {
+                font-size: 20px;
+                color: #667eea;
+                margin-right: 12px;
+                transition: transform 0.3s ease;
+                flex-shrink: 0;
+            }
+
+            .search-container:focus-within .search-icon {
+                transform: scale(1.1);
+            }
+
+            .smart-search-input {
+                flex: 1;
+                border: none;
+                outline: none;
+                font-size: 16px;
+                padding: 12px 0;
+                color: #333;
+                background: transparent;
+                min-width: 0;
+            }
+
+                .smart-search-input::placeholder {
+                    color: #999;
+                }
+
+            .clear-search {
+                background: none;
+                border: none;
+                color: #999;
+                font-size: 20px;
+                cursor: pointer;
+                padding: 5px;
+                margin-left: 10px;
+                transition: color 0.2s, transform 0.2s;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+                .clear-search:hover {
+                    color: #667eea;
+                    transform: rotate(90deg);
+                }
+
+            /* Suggestions dropdown */
+            .search-suggestions {
+                position: absolute;
+                top: calc(100% + 10px);
+                left: 0;
+                right: 0;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+                max-height: 400px;
+                overflow-y: auto;
+                z-index: 10000;
+                animation: slideDown 0.3s ease;
+            }
+
+            @@keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .suggestions-header {
+                padding: 15px 20px;
+                border-bottom: 1px solid #f0f0f0;
+                background: linear-gradient(to right, #f8f9fa, #ffffff);
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+
+            .suggestions-title {
+                font-weight: 600;
+                color: #667eea;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .suggestions-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .suggestion-item {
+                padding: 15px 20px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border-bottom: 1px solid #f5f5f5;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+                .suggestion-item:hover,
+                .suggestion-item.selected {
+                    background: linear-gradient(to right, #f8f9ff, #ffffff);
+                    padding-left: 25px;
+                }
+
+                .suggestion-item:last-child {
+                    border-bottom: none;
+                }
+
+            .suggestion-icon {
+                color: #667eea;
+                font-size: 16px;
+                min-width: 20px;
+                flex-shrink: 0;
+            }
+
+            .suggestion-text {
+                flex: 1;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+                .suggestion-text strong {
+                    color: #667eea;
+                    font-weight: 600;
+                }
+
+            .suggestion-category {
+                font-size: 12px;
+                color: #999;
+                background: #f0f0f0;
+                padding: 2px 8px;
+                border-radius: 10px;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .no-results {
+                text-align: center;
+                padding: 40px 20px;
+                color: #999;
+            }
+
+                .no-results i {
+                    font-size: 48px;
+                    margin-bottom: 10px;
+                    opacity: 0.3;
+                }
+
+                .no-results p {
+                    margin: 0;
+                    font-size: 16px;
+                }
+
+            /* Custom scrollbar */
+            .search-suggestions::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .search-suggestions::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 10px;
+            }
+
+            .search-suggestions::-webkit-scrollbar-thumb {
+                background: #667eea;
+                border-radius: 10px;
+            }
+
+                .search-suggestions::-webkit-scrollbar-thumb:hover {
+                    background: #764ba2;
+                }
+
+            /* Loading animation */
+            .search-container.loading .search-icon {
+                animation: rotate 1s linear infinite;
+            }
+
+            @@keyframes rotate {
+                from {
+                    transform: rotate(0deg);
+                }
+
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* ===================================
+                       RESPONSIVE STYLES
+               =================================== */
+
+            /* Tablets and below (768px) */
+            @@media (max-width: 768px) {
+                .smart-search-section {
+                    padding: 30px 0;
+                }
+
+                .search-wrapper {
+                    padding: 0 15px;
+                }
+
+                .search-container {
+                    padding: 6px 15px;
+                }
+
+                .smart-search-input {
+                    font-size: 14px;
+                    padding: 10px 0;
+                }
+
+                    .smart-search-input::placeholder {
+                        font-size: 13px;
+                    }
+
+                .suggestion-item {
+                    padding: 12px 15px;
+                    gap: 10px;
+                }
+
+                    .suggestion-item:hover,
+                    .suggestion-item.selected {
+                        padding-left: 20px;
+                    }
+
+                .suggestion-category {
+                    display: none;
+                }
+
+                .suggestions-header {
+                    padding: 12px 15px;
+                }
+
+                .search-icon {
+                    font-size: 18px;
+                    margin-right: 10px;
+                }
+
+                .clear-search {
+                    font-size: 18px;
+                }
+            }
+
+            /* Mobile phones (480px) */
+            @@media (max-width: 480px) {
+                .smart-search-section {
+                    padding: 20px 0;
+                }
+
+                .search-container {
+                    padding: 5px 12px;
+                }
+
+                .smart-search-input {
+                    font-size: 13px;
+                }
+
+                .suggestion-item {
+                    padding: 10px 12px;
+                }
+
+                .suggestion-text {
+                    font-size: 14px;
+                }
+
+                .search-suggestions {
+                    max-height: 300px;
+                }
+            }
+
+            /* Small mobile (360px) */
+            @@media (max-width: 360px) {
+                .search-icon {
+                    font-size: 16px;
+                    margin-right: 8px;
+                }
+
+                .clear-search {
+                    font-size: 16px;
+                    margin-left: 5px;
+                }
+            }
+        </style>
+
+        <script>
+            /*
+             * SMART SEARCH BAR FUNCTIONALITY
+             * Features:
+             * - Real-time autocomplete
+             * - Keyboard navigation (Arrow keys, Enter, Escape)
+             * - Click outside to close
+             * - Debounced search (performance optimization)
+             * - Regex-safe highlighting
+             */
+
+            (function() {
+                'use strict';
+
+                // ===================================
+                // SEARCH DATA CONFIGURATION
+                // ===================================
+                const searchData = [
+                    // Main Categories
+                    { name: 'Dupatta', category: 'Category', icon: 'bi-bag-fill', url: '@Url.Action("Details", "Category", new { name = "Dupatta" })' },
+                    { name: 'Embrodari & Handwork', category: 'Category', icon: 'bi-scissors', url: '@Url.Action("Details", "Category", new { name = "Embrodari & Handwork" })' },
+
+                    // Print Fabrics
+                    { name: 'Cotton Print', category: 'Print Fabric', icon: 'bi-palette-fill', url: '@Url.Action("Details", "Category", new { name = "Cotton Print" })' },
+                    { name: 'Mal Cotton Print', category: 'Print Fabric', icon: 'bi-palette-fill', url: '@Url.Action("Details", "Category", new { name = "Mal Cotton Print" })' },
+                    { name: 'Chikan Print', category: 'Print Fabric', icon: 'bi-palette-fill', url: '@Url.Action("Details", "Category", new { name = "Chikan Print" })' },
+                    { name: 'Linan Print', category: 'Print Fabric', icon: 'bi-palette-fill', url: '@Url.Action("Details", "Category", new { name = "Linan" })' },
+                    { name: 'Ikkat Print', category: 'Print Fabric', icon: 'bi-palette-fill', url: '@Url.Action("Details", "Category", new { name = "Iikkat" })' },
+                    { name: 'Silk & Maslin Print', category: 'Print Fabric', icon: 'bi-palette-fill', url: '@Url.Action("Details", "Category", new { name = "Silk & Maslin Print" })' },
+                    { name: 'Gamthi Print', category: 'Print Fabric', icon: 'bi-palette-fill', url: '@Url.Action("Details", "Category", new { name = "Gamthi Print" })' },
+
+                    // Plain Fabrics
+                    { name: 'Zara Cotton Plain', category: 'Plain Fabric', icon: 'bi-square-fill', url: '@Url.Action("Details", "Category", new { name = "Zara Cotton Plain" })' },
+                    { name: 'Khadi Cotton Plain', category: 'Plain Fabric', icon: 'bi-square-fill', url: '@Url.Action("Details", "Category", new { name = "Khadi Cotton Plain" })' },
+                    { name: 'Jam Cotton Plain', category: 'Plain Fabric', icon: 'bi-square-fill', url: '@Url.Action("Details", "Category", new { name = "Jam Cotton Plain" })' },
+                    { name: 'Mal Cotton Plain', category: 'Plain Fabric', icon: 'bi-square-fill', url: '@Url.Action("Details", "Category", new { name = "Mal Cotton Plain" })' },
+
+                    // Material Types
+                    { name: 'Cotton Fabrics', category: 'Material', icon: 'bi-tag-fill', url: '#menu' },
+                    { name: 'Silk Fabrics', category: 'Material', icon: 'bi-tag-fill', url: '#menu' },
+                    { name: 'Maslin Material', category: 'Material', icon: 'bi-tag-fill', url: '#menu' },
+                    { name: 'Khadi Material', category: 'Material', icon: 'bi-tag-fill', url: '#menu' },
+
+                    // Collections
+                    { name: 'Wedding Collection', category: 'Collection', icon: 'bi-star-fill', url: '#menu' },
+                    { name: 'Casual Wear', category: 'Collection', icon: 'bi-star-fill', url: '#menu' },
+                    { name: 'Traditional Designs', category: 'Collection', icon: 'bi-star-fill', url: '#menu' },
+                    { name: 'Festive Collection', category: 'Collection', icon: 'bi-star-fill', url: '#menu' },
+
+                    // Quick Links
+                    { name: 'View Gallery', category: 'Quick Link', icon: 'bi-images', url: '#gallery' },
+                    { name: 'Contact Us', category: 'Quick Link', icon: 'bi-telephone-fill', url: '#contact' },
+                    { name: 'About Us', category: 'Quick Link', icon: 'bi-info-circle-fill', url: '#about' },
+                    { name: 'Our Owners', category: 'Quick Link', icon: 'bi-people-fill', url: '#owner' }
+                ];
+
+                // ===================================
+                // DOM ELEMENTS
+                // ===================================
+                const searchInput = document.getElementById('smartSearchInput');
+                const suggestionsBox = document.getElementById('searchSuggestions');
+                const suggestionsList = document.getElementById('suggestionsList');
+                const noResults = document.getElementById('noResults');
+                const clearBtn = document.getElementById('clearSearch');
+                const searchContainer = document.querySelector('.search-container');
+
+                // Check if elements exist
+                if (!searchInput || !suggestionsBox || !suggestionsList || !noResults || !clearBtn || !searchContainer) {
+                    console.error('Smart Search: Required DOM elements not found');
+                    return;
+                }
+
+                // ===================================
+                // STATE MANAGEMENT
+                // ===================================
+                let selectedIndex = -1;
+                let searchTimeout = null;
+
+                // ===================================
+                // EVENT LISTENERS
+                // ===================================
+
+                // Input event - show/hide clear button and perform search
+                searchInput.addEventListener('input', function() {
+                    clearBtn.style.display = this.value ? 'block' : 'none';
+                    performSearch(this.value);
+                });
+
+                // Clear button click
+                clearBtn.addEventListener('click', function() {
+                    searchInput.value = '';
+                    clearBtn.style.display = 'none';
+                    suggestionsBox.style.display = 'none';
+                    searchInput.focus();
+                });
+
+                // Focus event - show suggestions if input has value
+                searchInput.addEventListener('focus', function() {
+                    if (this.value.length > 0) {
+                        performSearch(this.value);
+                    }
+                });
+
+                // Click outside to close
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.search-wrapper')) {
+                        suggestionsBox.style.display = 'none';
+                        selectedIndex = -1;
+                    }
+                });
+
+                // Keyboard navigation
+                searchInput.addEventListener('keydown', function(e) {
+                    const items = suggestionsList.querySelectorAll('.suggestion-item');
+                    if (items.length === 0) return;
+
+                    switch(e.key) {
+                        case 'ArrowDown':
+                            e.preventDefault();
+                            selectedIndex = (selectedIndex + 1) % items.length;
+                            updateSelection(items);
+                            break;
+
+                        case 'ArrowUp':
+                            e.preventDefault();
+                            selectedIndex = selectedIndex <= 0 ? items.length - 1 : selectedIndex - 1;
+                            updateSelection(items);
+                            break;
+
+                        case 'Enter':
+                            e.preventDefault();
+                            if (selectedIndex >= 0 && items[selectedIndex]) {
+                                items[selectedIndex].click();
+                            }
+                            break;
+
+                        case 'Escape':
+                            suggestionsBox.style.display = 'none';
+                            selectedIndex = -1;
+                            break;
+                    }
+                });
+
+                // ===================================
+                // CORE FUNCTIONS
+                // ===================================
+
+                /**
+                 * Perform search with debouncing (150ms delay)
+                
+                 */
+                function performSearch(query) {
+                    clearTimeout(searchTimeout);
+
+                    if (query.length < 1) {
+                        suggestionsBox.style.display = 'none';
+                        return;
+                    }
+
+                    // Debounce to avoid excessive filtering
+                    searchTimeout = setTimeout(() => {
+                        const filtered = searchData.filter(item =>
+                            item.name.toLowerCase().includes(query.toLowerCase()) ||
+                            item.category.toLowerCase().includes(query.toLowerCase())
+                        );
+
+                        if (filtered.length > 0) {
+                            displaySuggestions(filtered, query);
+                            noResults.style.display = 'none';
+                        } else {
+                            suggestionsList.innerHTML = '';
+                            noResults.style.display = 'block';
+                        }
+
+                        suggestionsBox.style.display = 'block';
+                        selectedIndex = -1;
+                    }, 150);
+                }
+
+                /**
+                 * Display search suggestions
+                
+                 */
+                function displaySuggestions(items, query) {
+                    suggestionsList.innerHTML = '';
+
+                    // Show maximum 10 results
+                    items.slice(0, 10).forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'suggestion-item';
+                        li.setAttribute('data-index', index);
+                        li.setAttribute('role', 'option');
+                        li.innerHTML = `
+                            <i class="${item.icon} suggestion-icon"></i>
+                            <span class="suggestion-text">${highlightMatch(item.name, query)}</span>
+                            <span class="suggestion-category">${item.category}</span>
+                        `;
+
+                        li.addEventListener('click', function() {
+                            navigateToUrl(item.url, item.name);
+                        });
+
+                        suggestionsList.appendChild(li);
+                    });
+                }
+
+                /**
+                 * Highlight matching text in search results
+               
+                 */
+                function highlightMatch(text, query) {
+                    if (!query) return text;
+                    const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+                    return text.replace(regex, '<strong>$1</strong>');
+                }
+
+                /**
+                 * Escape special regex characters
+               
+                 */
+                function escapeRegex(string) {
+                    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                }
+
+                /**
+                 * Navigate to selected URL
+                
+                 */
+                function navigateToUrl(url, name) {
+                    searchInput.value = name;
+                    suggestionsBox.style.display = 'none';
+                    window.location.href = url;
+                }
+
+                /**
+                 * Update selected item in dropdown
+              
+                 */
+                function updateSelection(items) {
+                    items.forEach((item, index) => {
+                        if (index === selectedIndex) {
+                            item.classList.add('selected');
+                            item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                        } else {
+                            item.classList.remove('selected');
+                        }
+                    });
+                }
+
+            })();
+        </script>
+    }
     <!-- Hero Section -->
     <section id="hero" class="hero section light-background">
 
@@ -1471,6 +2109,735 @@
        
 
     </section><!-- /Contact Section -->
+  
 
+    <!-- Chatbot Section with Database Integration -->
+    <div id="ajay-fashion-chatbot">
+        <!-- Floating Chat Button -->
+        <button id="chatToggleBtn" class="chat-toggle-btn">
+            <img src="~/template/assets/img/chatlogo.png" alt="Chat" class="chat-icon-logo">
+            <span class="notification-badge">1</span>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="chatWindow" class="chat-window">
+            <!-- Header -->
+            <div class="chat-header">
+                <div class="header-content">
+                    <div class="bot-avatar">
+                        <img src="~/template/assets/img/chatlogo.png" alt="Ajay Fashion">
+                    </div>
+                    <div class="bot-info">
+                        <h2>Ajay Fashion Bot</h2>
+                        <p class="status">
+                            <span class="status-dot"></span> Online • Ready to help
+                        </p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="expandBtn" class="icon-btn" title="Expand">
+                        <i class="bi bi-arrows-fullscreen"></i>
+                    </button>
+                    <button id="closeBtn" class="icon-btn" title="Close">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages Container -->
+            <div id="messagesContainer" class="messages-container">
+                <div class="message bot-message">
+                    <div class="message-avatar">
+                        <img src="~/template/assets/img/chatlogo.png" alt="Bot">
+                    </div>
+                    <div class="message-content">
+                        <p>Hi! Welcome to Ajay Fashion! I'm here to help you with fabric selection, size guidance, and any questions about our products!</p>
+                        <span class="message-time" id="initialTime"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Questions -->
+            <div id="quickQuestions" class="quick-questions">
+                <p class="quick-title">Quick questions:</p>
+                <div class="quick-buttons">
+                    <button class="quick-btn" data-question="What fabrics do you have?">
+                        <i class="bi bi-box-seam"></i> What fabrics?
+                    </button>
+                    <button class="quick-btn" data-question="Size measurements?">
+                        <i class="bi bi-rulers"></i> Sizes?
+                    </button>
+                    <button class="quick-btn" data-question="Delivery time?">
+                        <i class="bi bi-truck"></i> Delivery?
+                    </button>
+                    <button class="quick-btn" data-question="Contact details?">
+                        <i class="bi bi-telephone"></i> Contact?
+                    </button>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Type your message..." autocomplete="off">
+                <button id="sendBtn" class="send-btn" title="Send message">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* ===================================
+           CHATBOT STYLES - ENHANCED VERSION
+           =================================== */
+
+        #ajay-fashion-chatbot {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        /* Chat Toggle Button */
+        .chat-toggle-btn {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            overflow: hidden;
+        }
+
+            .chat-toggle-btn::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: 50%;
+                padding: 2px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .chat-toggle-btn:hover {
+                transform: scale(1.1) rotate(5deg);
+                box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+            }
+
+                .chat-toggle-btn:hover::before {
+                    opacity: 1;
+                }
+
+        .chat-icon-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+            filter: brightness(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+            border: 2px solid white;
+        }
+
+       
+
+        /* Chat Window */
+        .chat-window {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 420px;
+            max-width: calc(100vw - 48px);
+            height: 650px;
+            max-height: calc(100vh - 100px);
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+            .chat-window.active {
+                display: flex;
+            }
+
+            .chat-window.expanded {
+                width: calc(100vw - 48px);
+                height: calc(100vh - 48px);
+                border-radius: 16px;
+            }
+
+      
+        /* Chat Header */
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .chat-header::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+                animation: headerGlow 3s ease-in-out infinite;
+            }
+
+       
+
+        /* Messages Container */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 20px;
+            background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+     
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 5px;
+            padding: 14px 18px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #9ca3af;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+            .typing-dot:nth-child(1) {
+                animation-delay: -0.32s;
+            }
+
+            .typing-dot:nth-child(2) {
+                animation-delay: -0.16s;
+            }
+
+       
+
+        /* Quick Questions */
+        .quick-questions {
+            padding: 18px 20px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .quick-title {
+            font-size: 12px;
+            color: #6b7280;
+            margin: 0 0 12px 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quick-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .quick-btn {
+            background: linear-gradient(135deg, #f3f4f6, #ffffff);
+            color: #7c3aed;
+            border: 1px solid #e5e7eb;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+            .quick-btn i {
+                font-size: 14px;
+            }
+
+            .quick-btn:hover {
+                background: linear-gradient(135deg, #e9d5ff, #f3e8ff);
+                border-color: #7c3aed;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+            }
+
+            .quick-btn:active {
+                transform: translateY(0);
+            }
+
+        /* Input Area */
+        .chat-input-area {
+            padding: 18px 20px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 12px;
+        }
+
+        #chatInput {
+            flex: 1;
+            border: 2px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 12px 18px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+            #chatInput:focus {
+                border-color: #7c3aed;
+                box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+            }
+
+            #chatInput::placeholder {
+                color: #9ca3af;
+            }
+
+        .send-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+            .send-btn:hover:not(:disabled) {
+                transform: scale(1.1) rotate(15deg);
+                box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+            }
+
+            .send-btn:active:not(:disabled) {
+                transform: scale(0.95) rotate(0deg);
+            }
+
+            .send-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
+
+        /* Scrollbar */
+        .messages-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .messages-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .messages-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+        }
+
+            .messages-container::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(135deg, #764ba2, #667eea);
+            }
+
+       
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        (function() {
+            'use strict';
+
+            // ===================================
+            // CONFIGURATION & STATE
+            // ===================================
+
+            const API_BASE_URL = '@Url.Action("", "ChatApi", null, Context.Request.Scheme)';
+
+            // Generate unique session ID
+            const SESSION_ID = getOrCreateSessionId();
+            const USER_EMAIL = '@(User.Identity.IsAuthenticated? User.Identity.Name : "guest")';
+
+            // Knowledge Base
+            const knowledgeBase = {
+                greetings: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening', 'namaste', 'hii'],
+                sizing: {
+                    keywords: ['size', 'measurement', 'fit', 'length', 'width', 'dimensions', 'meter', 'how much'],
+                    responses: [
+                        'For dress materials, standard measurements are:\n• Kurta/Top: 2.5 meters\n• Salwar/Bottom: 2.5 meters\n• Dupatta: 2.25 meters\n\nWould you like specific measurements for a particular fabric?'
+                    ]
+                },
+                fabrics: {
+                    keywords: ['fabric', 'material', 'cotton', 'silk', 'print', 'plain', 'dupatta', 'cloth', 'type'],
+                    responses: [
+                        'We offer various fabrics:\n• Cotton Print (Soft & Breathable)\n• Silk & Maslin (Luxurious Feel)\n• Khadi Cotton (Traditional)\n• Mal Cotton (Smooth Texture)\n\nWhich type interests you?'
+                    ]
+                },
+                care: {
+                    keywords: ['wash', 'care', 'maintain', 'clean', 'iron', 'how to wash', 'washing'],
+                    responses: [
+                        'Fabric care tips:\n• Cotton: Machine wash cold, iron on medium\n• Silk: Dry clean or hand wash cold\n• Printed fabrics: Wash inside out to preserve colors\n• Always check fabric label for specific instructions'
+                    ]
+                },
+                price: {
+                    keywords: ['price', 'cost', 'rate', 'wholesale', 'bulk', 'rupees', 'cheap', 'expensive', 'how much'],
+                    responses: [
+                        'Our prices vary by fabric type:\n• Print Fabrics: ₹150-₹500/meter\n• Plain Fabrics: ₹100-₹400/meter\n• Silk Materials: ₹300-₹800/meter\n• Wholesale rates available for bulk orders!\n\nCall us at 9898308449 for exact pricing.'
+                    ]
+                },
+                delivery: {
+                    keywords: ['delivery', 'shipping', 'order', 'dispatch', 'courier', 'send', 'transport', 'when'],
+                    responses: [
+                        'Delivery Information:\n• Local (Surat): 1-2 days\n• Gujarat: 2-4 days\n• All India: 3-7 days\n• Free shipping on orders above ₹2000\n\nWe use reliable courier services for safe delivery.'
+                    ]
+                },
+                contact: {
+                    keywords: ['contact', 'phone', 'call', 'address', 'location', 'visit', 'where', 'number'],
+                    responses: [
+                        '📍 Address: 2/25 Ajay Fashion, Gujarat Housing Board, New Bombay Market, Umarwada, Surat\n📞 Phone: 9898248747 / 9898308449\n📧 Email: kirit749@gmail.com\n🕒 Hours: Mon-Sat 9AM-8PM, Sun 9AM-1PM'
+                    ]
+                },
+                categories: {
+                    keywords: ['category', 'type', 'collection', 'design', 'pattern', 'variety', 'what do you have'],
+                    responses: [
+                        'Browse our categories:\n• Dupatta Collection\n• Embroidery & Handwork\n• Print Fabrics (Cotton, Chikan, Ikkat)\n• Plain Fabrics (Zara, Khadi, Jam)\n• Festive & Wedding Specials'
+                    ]
+                }
+            };
+
+            // DOM Elements
+            const toggleBtn = document.getElementById('chatToggleBtn');
+            const closeBtn = document.getElementById('closeBtn');
+            const expandBtn = document.getElementById('expandBtn');
+            const chatWindow = document.getElementById('chatWindow');
+            const messagesContainer = document.getElementById('messagesContainer');
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const quickQuestions = document.getElementById('quickQuestions');
+
+            // State
+            let isExpanded = false;
+            let messageCount = 1;
+
+            // ===================================
+            // INITIALIZATION
+            // ===================================
+
+            document.getElementById('initialTime').textContent = getCurrentTime();
+            loadChatHistory();
+
+            // ===================================
+            // EVENT LISTENERS
+            // ===================================
+
+            toggleBtn.addEventListener('click', openChat);
+            closeBtn.addEventListener('click', closeChat);
+            expandBtn.addEventListener('click', toggleExpand);
+            sendBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', handleKeyPress);
+
+            // Quick Questions
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    chatInput.value = this.dataset.question;
+                    sendMessage();
+                });
+            });
+
+            // ===================================
+            // CORE FUNCTIONS
+            // ===================================
+
+            function getOrCreateSessionId() {
+                let sessionId = localStorage.getItem('ajay_fashion_session_id');
+                if (!sessionId) {
+                    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('ajay_fashion_session_id', sessionId);
+                }
+                return sessionId;
+            }
+
+            function openChat() {
+                chatWindow.classList.add('active');
+                toggleBtn.style.display = 'none';
+                chatInput.focus();
+            }
+
+            function closeChat() {
+                chatWindow.classList.remove('active');
+                toggleBtn.style.display = 'flex';
+            }
+
+            function toggleExpand() {
+                isExpanded = !isExpanded;
+                chatWindow.classList.toggle('expanded');
+                expandBtn.innerHTML = isExpanded
+                    ? '<i class="bi bi-arrows-angle-contract"></i>'
+                    : '<i class="bi bi-arrows-fullscreen"></i>';
+            }
+
+            function handleKeyPress(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            }
+
+            function sendMessage() {
+                const text = chatInput.value.trim();
+                if (!text) return;
+
+                // Hide quick questions after first message
+                if (messageCount === 1) {
+                    quickQuestions.style.display = 'none';
+                }
+
+                // Add user message
+                addMessage(text, 'user');
+                chatInput.value = '';
+                messageCount++;
+
+                // Show typing indicator
+                showTypingIndicator();
+
+                // Get bot response after delay
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    const response = getBotResponse(text);
+                    addMessage(response, 'bot');
+
+                    // Save to database via AJAX
+                    saveToDatabase(text, response);
+                }, 1000);
+            }
+
+            function addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}-message`;
+
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = 'message-avatar';
+
+                if (type === 'bot') {
+                    avatarDiv.innerHTML = '<img src="@Url.Content("~/template/assets/img/chatlogo.png")" alt="Bot">';
+                } else {
+                    avatarDiv.innerHTML = '<i class="bi bi-person-fill"></i>';
+                }
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.innerHTML = `<p>${escapeHtml(text)}</p><span class="message-time">${getCurrentTime()}</span>`;
+
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(contentDiv);
+                messagesContainer.appendChild(messageDiv);
+
+                scrollToBottom();
+            }
+
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.innerHTML = `
+                    <div class="message-avatar">
+                        <img src="@Url.Content("~/template/assets/img/chatlogo.png")" alt="Bot">
+                    </div>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                `;
+                messagesContainer.appendChild(typingDiv);
+                scrollToBottom();
+            }
+
+            function hideTypingIndicator() {
+                const indicator = document.getElementById('typingIndicator');
+                if (indicator) indicator.remove();
+            }
+
+            function getBotResponse(userMessage) {
+                const lowerMessage = userMessage.toLowerCase();
+
+                // Check for greetings
+                if (knowledgeBase.greetings.some(greeting => lowerMessage.includes(greeting))) {
+                    return 'Hello! How can I assist you today? I can help with:\n• Size & measurements\n• Fabric selection\n• Pricing information\n• Care instructions\n• Delivery details';
+                }
+
+                // Check each category
+                for (const [category, data] of Object.entries(knowledgeBase)) {
+                    if (category !== 'greetings' && data.keywords) {
+                        if (data.keywords.some(keyword => lowerMessage.includes(keyword))) {
+                            return data.responses[0];
+                        }
+                    }
+                }
+
+                // Default response
+                return 'I\'m here to help! You can ask me about:\n• Fabric types & materials\n• Size measurements\n• Pricing & wholesale\n• Care instructions\n• Delivery information\n\nOr call us at 9898308449 for personalized assistance!';
+            }
+
+            // ===================================
+            // AJAX DATABASE FUNCTIONS
+            // ===================================
+
+            function saveToDatabase(query, botResponse) {
+                $.ajax({
+                     url: 'http://localhost:5045/api/ChatApi/SaveMessage',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        Query: query,
+                        BotResponse: botResponse,
+                        UserEmail: USER_EMAIL,
+                        SessionId: SESSION_ID
+                    }),
+                    success: function(response) {
+                        if (response.success) {
+                            console.log('Message saved successfully. ID:', response.id);
+                        } else {
+                            console.error('Failed to save message:', response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                    }
+                });
+            }
+
+            function loadChatHistory() {
+                $.ajax({
+                              url: `http://localhost:5045/api/ChatApi/GetHistory?sessionId=${SESSION_ID}`, 
+                    type: 'GET',
+                    data: { sessionId: SESSION_ID },
+                    success: function(response) {
+                        if (response.success && response.data && response.data.length > 0) {
+                            // Clear existing messages except welcome message
+                            const welcomeMsg = messagesContainer.firstElementChild;
+                            messagesContainer.innerHTML = '';
+                            messagesContainer.appendChild(welcomeMsg);
+
+                            // Load history
+                            response.data.forEach(msg => {
+                                addMessage(msg.Query, 'user');
+                                addMessage(msg.BotResponse, 'bot');
+                            });
+
+                            messageCount = response.data.length + 1;
+                            if (messageCount > 1) {
+                                quickQuestions.style.display = 'none';
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed to load history:', error);
+                    }
+                });
+            }
+
+            // ===================================
+            // UTILITY FUNCTIONS
+            // ===================================
+
+            function getCurrentTime() {
+                return new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
+
+            function scrollToBottom() {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            function escapeHtml(text) {
+                const map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, m => map[m]);
+            }
+
+        })();
+    </script>
 </main>
 
