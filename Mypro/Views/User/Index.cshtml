@@ -640,12 +640,13 @@
                         } else {
                             item.classList.remove('selected');
                         }
-                    });
+                    });naa
                 }
 
             })();
         </script>
     }
+
     <!-- Hero Section -->
     <section id="hero" class="hero section light-background">
 
@@ -1480,17 +1481,18 @@
     </style>
 
     <script>
+
         const menu = document.getElementById('sideMenu');
         const menuLink = document.querySelector('a[href="#menu"]');
 
-        // Open menu when clicking on "Menu" link
+        
         menuLink.addEventListener('click', function (e) {
             e.preventDefault();
             menu.classList.add('active');
-            document.body.classList.add('menu-open'); // Optional: to disable body scroll
+            document.body.classList.add('menu-open'); 
         });
 
-        // Close menu when clicking back button
+       
         function closeMenu() {
             menu.classList.remove('active');
             document.body.classList.remove('menu-open');
@@ -1507,6 +1509,7 @@
         menu.addEventListener('click', function (e) {
             e.stopPropagation();
         });
+
     </script>
 
 
@@ -2782,7 +2785,8 @@
 
             function loadChatHistory() {
                 $.ajax({
-                              url: `http://localhost:5045/api/ChatApi/GetHistory?sessionId=${SESSION_ID}`, 
+                    
+                    url: `http://localhost:5045/api/ChatApi/GetHistory?sessionId=${SESSION_ID}`, 
                     type: 'GET',
                     data: { sessionId: SESSION_ID },
                     success: function(response) {
@@ -2793,7 +2797,8 @@
                             messagesContainer.appendChild(welcomeMsg);
 
                             // Load history
-                            response.data.forEach(msg => {
+                            response.data.forEach(msg =>
+                            {
                                 addMessage(msg.Query, 'user');
                                 addMessage(msg.BotResponse, 'bot');
                             });

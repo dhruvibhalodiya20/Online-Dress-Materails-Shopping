@@ -21,6 +21,7 @@ namespace Mypro.Models
 
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ChatMessage> ChatMessages { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
     }
 }

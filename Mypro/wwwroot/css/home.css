@@ -359,7 +359,7 @@ body {
 
 /* ===================================
            RESPONSIVE STYLES
-           =================================== */
+  =================================== */
 
 @media (max-width: 768px) {
     #ajay-fashion-chatbot {
@@ -731,4 +731,36 @@ body {
         opacity: 0.8;
         transform: scale(1.05);
     }
+}
+
+
+/*Notification*/
+#notificationList {
+    border: 1px solid #dee2e6;
+}
+
+.notification-item:last-child {
+    border-bottom: none !important;
+}
+
+.notification-message {
+    line-height: 1.4;
+}
+
+#notificationBadge {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+img[alt="Notification Image"] {
+    background-color: #f3f3f3;
 }

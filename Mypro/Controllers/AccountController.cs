@@ -741,7 +741,6 @@ namespace Mypro.Controllers
             return RedirectToAction("Cart"); 
         }
 
-       
 
 
 
@@ -771,44 +770,7 @@ namespace Mypro.Controllers
 
 
 
-        //ADmin
-        [Authorize(Roles = "Admin")]
-        public IActionResult ManageCustomers(string searchBy, string searchtext)
-        {
-            var customers = _abc.Customers.Include(c => c.City).AsQueryable();
 
-            if (!string.IsNullOrEmpty(searchtext))
-            {
-                switch (searchBy)
-                {
-                    case "Name":
-                        customers = customers.Where(c => c.CustomerName.Contains(searchtext));
-                        break;
-                    case "Email":
-                        customers = customers.Where(c => c.Email.Contains(searchtext));
-                        break;
-                    case "Contact":
-                        customers = customers.Where(c => c.ContactNumber.Contains(searchtext));
-                        break;
-                }
-            }
-
-            ViewBag.SearchBy = searchBy;
-            ViewBag.Searchtext = searchtext;
-            return View(customers.ToList());
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult DeleteCustomer(int id)
-        {
-            var customer = _abc.Customers.Find(id);
-            if (customer != null)
-            {
-                _abc.Customers.Remove(customer);
-                _abc.SaveChanges();
-            }
-            return RedirectToAction("ManageCustomers");
-        }
 
         //[Authorize(Roles = "Admin")]
         //public IActionResult CreateCustomer()
@@ -857,6 +819,47 @@ namespace Mypro.Controllers
         //}
 
 
+
+
+
+        //ADmin
+        [Authorize(Roles = "Admin")]
+        public IActionResult ManageCustomers(string searchBy, string searchtext)
+        {
+            var customers = _abc.Customers.Include(c => c.City).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchtext))
+            {
+                switch (searchBy)
+                {
+                    case "Name":
+                        customers = customers.Where(c => c.CustomerName.Contains(searchtext));
+                        break;
+                    case "Email":
+                        customers = customers.Where(c => c.Email.Contains(searchtext));
+                        break;
+                    case "Contact":
+                        customers = customers.Where(c => c.ContactNumber.Contains(searchtext));
+                        break;
+                }
+            }
+
+            ViewBag.SearchBy = searchBy;
+            ViewBag.Searchtext = searchtext;
+            return View(customers.ToList());
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteCustomer(int id)
+        {
+            var customer = _abc.Customers.Find(id);
+            if (customer != null)
+            {
+                _abc.Customers.Remove(customer);
+                _abc.SaveChanges();
+            }
+            return RedirectToAction("ManageCustomers");
+        }
 
 
 
@@ -1118,14 +1121,12 @@ namespace Mypro.Controllers
                 return View(model);
             }
 
-           
             var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/template/assets/img");
             if (!Directory.Exists(uploadFolder))
             {
                 Directory.CreateDirectory(uploadFolder);
             }
 
-           
             var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(model.ImageFile.FileName);
             var filePath = Path.Combine(uploadFolder, uniqueFileName);
 
@@ -1143,6 +1144,22 @@ namespace Mypro.Controllers
             };
 
             _abc.CategoryImages.Add(image);
+            _abc.SaveChanges();
+
+            var category = _abc.Categories.FirstOrDefault(c => c.CategoryId == model.CategoryId);
+            var notification = new Notification
+            {
+                Title = "New Arrival!",
+                Message = $"New {category?.CategoryName} item added - {model.Color}",
+                ImagePath = image.ImagePath,
+                CategoryId = model.CategoryId,
+                ImageId = image.ImageId,
+                CreatedDate = DateTime.Now,
+                IsRead = false,
+                CustomerId = null 
+            };
+
+            _abc.Notifications.Add(notification);
             _abc.SaveChanges();
 
             return RedirectToAction("ManageCategoryImages", "Account");

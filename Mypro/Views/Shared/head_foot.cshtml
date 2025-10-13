@@ -183,6 +183,34 @@
                         <a href="@Url.Action("Cart", "Account")" class="text-dark me-2" title="Add to Cart" style="font-size:1.3rem;">
                             <i class="bi bi-cart"></i>
                         </a>
+                       
+                        <!-- Notification Bell -->
+
+
+                        <a href="#" id="notificationBell" class="nav-link position-relative" title="Notification" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-bell fs-5"></i>
+                                <span id="notificationBadge"
+                                      class="badge bg-danger rounded-circle position-absolute"
+                                      style="top:-6px; right:-6px; font-size:0.65rem; display:none; min-width:18px; height:18px; padding:2px;">0</span>
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-end shadow p-0 border-0"
+                                style="width:360px; max-height:460px; overflow-y:auto; border-radius:10px;" id="notificationDropdown">
+
+                                <li class="dropdown-header d-flex justify-content-between align-items-center bg-light py-2 px-3 border-bottom">
+                                    <span class="fw-bold">Notifications</span>
+                                    @* <button class="btn btn-sm btn-link text-decoration-none p-0" id="markAllRead" style="font-size:0.8rem;">Mark all read</button> *@
+                                </li>
+
+                                <ul id="notificationContainer" class="list-unstyled m-0 p-0">
+                                    <li class="text-center text-muted py-3">Loading...</li>
+                                </ul>
+                            </ul>
+                        
+
+                    
+
+                   
 
                         @* <!--Order -->
                         @{
@@ -306,7 +334,108 @@
                 });
             });
         });
+
+
+        $(document).ready(function () {
+            loadNotifications();
+            setInterval(loadNotifications, 30000); 
+
+            // Load notifications
+            function loadNotifications() {
+                $.ajax({
+                    url: '/api/notifications/unread-count',
+                    method: 'GET',
+                    success: function (data) {
+                        updateNotificationBadge(data.count);
+                    }
+                });
+
+                $.ajax({
+                    url: '/api/notifications/recent',
+                    method: 'GET',
+                    success: function (data) {
+                        displayNotifications(data);
+                    }
+                });
+            }
+
+            // Update bell badge
+            function updateNotificationBadge(count) {
+                const badge = $('#notificationBadge');
+                if (count > 0) {
+                    badge.text(count > 99 ? '99+' : count);
+                    badge.show();
+                } else {
+                    badge.hide();
+                }
+            }
+
+            // Display notifications
+            function displayNotifications(notifications) {
+                const container = $('#notificationContainer');
+                container.empty();
+
+                if (!notifications || notifications.length === 0) {
+                    container.html('<li class="text-center text-muted py-3">No new notifications</li>');
+                    return;
+                }
+
+                notifications.forEach(function (notif) {
+                    const item = `
+                        <li class="border-bottom py-2 px-3 d-flex align-items-start hover-bg-light"
+                            data-id="${notif.notificationId}" style="cursor:pointer;">
+                            ${notif.imagePath ? `
+                                <img src="${notif.imagePath}" class="rounded me-2"
+                                     style="width:48px; height:48px; object-fit:cover;">
+                            ` : `<i class="bi bi-image text-secondary fs-3 me-2"></i>`}
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">${notif.title}</div>
+                                <div class="text-muted small">${notif.message}</div>
+                                <div class="text-muted" style="font-size:0.8rem;">${notif.timeAgo}</div>
+                            </div>
+                            <button class="btn btn-sm btn-link text-muted mark-read-btn p-0" data-id="${notif.notificationId}">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </li>`;
+                    container.append(item);
+                });
+            }
+
+            // Mark all as read
+            $('#markAllRead').on('click', function () {
+                $.ajax({
+                    url: '/api/notifications/mark-all-read',
+                    method: 'POST',
+                    success: function () {
+                        loadNotifications();
+                    }
+                });
+            });
+
+            // Mark single as read
+            $(document).on('click', '.mark-read-btn', function (e) {
+                e.stopPropagation();
+                const id = $(this).data('id');
+                $.ajax({
+                    url: `/api/notifications/mark-read/${id}`,
+                    method: 'POST',
+                    success: function () {
+                        loadNotifications();
+                    }
+                });
+            });
+
+            // Hover effect
+            const style = document.createElement('style');
+            style.textContent = `.hover-bg-light:hover { background-color: #f8f9fa; }`;
+            document.head.appendChild(style);
+        });
+   
+
+
+
     </script>
+    
 
     @RenderSection("Scripts", required: false)
 </body>
